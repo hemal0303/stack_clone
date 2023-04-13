@@ -1,0 +1,132 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.logo {
+    width: 150px;
+    height: 30px;
+}
+
+.minilogo {
+    height: 50px;
+}
+
+.nav_hover {
+    font-size: 13px;
+    margin-left: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.nav_hover:hover {
+    background-color: rgb(224, 224, 224);
+    border-radius: 30px;
+}
+
+.nav_searchbar {
+    padding-left: 8px;
+}
+
+nav {
+    border-top: 3px solid #f48225;
+}
+
+.first_section {
+    border-right: 1px solid silver;
+}
+
+footer {
+    background-color: #232629;
+    padding-bottom: 50px;
+}
+
+.footer_title {
+    color: #babfc4;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.footer_title:hover {
+    color: #babfc4;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.footer_details {
+    color: #9199a1;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.footer_details:hover {
+    color: #9199a1;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.first_section ul li {
+    font-size: small;
+    color: #75787c;
+}
+
+.questions {
+    background-color: #f1f2f3;
+    border-right: 3px solid #f48225;
+    padding-left: 10px;
+}
+
+.questions a {
+    font-weight: bold;
+    color: black;
+}
+
+.sub_menu_1 {
+    margin-left: 30px;
+}
+
+.third_section_title {
+    background-color: #fbf3d5;
+    color: #525960;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 10px;
+}
+
+.third_section_details {
+    background-color: #fdf7e2;
+}
+
+.third_sec_icon {
+    font-size: 11px;
+    font-weight: normal;
+    text-align: right;
+    padding-top: 12px;
+}
+
+.third_sec_border {
+    border: 1px solid #f1e5bc;
+    box-shadow: 0px 0px 3px 0.1px #f1e5bc;
+}
+
+.third_sec_border2 {
+    border-bottom: 1px solid #f1e5bc;
+    /* box-shadow: 0px 0px 3px 0.1px #f1e5bc; */
+}
+
+.third_sec_desc {
+    font-size: 11px;
+    font-weight: normal;
+    padding-top: 8px;
+    color: #3b4045;
+}
+
+.third_sec_end_padding {
+    padding-bottom: 5px;
+}
+
+.first_section {
+    overflow: auto;
+}
