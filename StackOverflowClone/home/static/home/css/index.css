@@ -3,6 +3,15 @@
     padding: 0;
 }
 
+:root {
+    --theme_background: #1a2229;
+    --theme_line: #0A95FF;
+}
+
+header{
+    background-color: var(--theme_background);
+}
+
 .logo {
     width: 150px;
     height: 30px;
@@ -20,7 +29,7 @@
 }
 
 .nav_hover:hover {
-    background-color: rgb(224, 224, 224);
+    background-color: var(--theme_line);
     border-radius: 30px;
 }
 
@@ -29,7 +38,7 @@
 }
 
 nav {
-    border-top: 3px solid #f48225;
+    border-top: 3px solid var(--theme_line);
 }
 
 .first_section {
@@ -37,19 +46,19 @@ nav {
 }
 
 footer {
-    background-color: #232629;
+    background-color: var(--theme_background);
     padding-bottom: 50px;
 }
 
 .footer_title {
-    color: #babfc4;
+    color: var(--theme_line);
     font-size: 14px;
     font-weight: bold;
     text-decoration: none;
 }
 
 .footer_title:hover {
-    color: #babfc4;
+    color: var(--theme_line);
     font-size: 14px;
     font-weight: bold;
     text-decoration: none;
@@ -67,14 +76,14 @@ footer {
     text-decoration: none;
 }
 
-.first_section ul li {
+.nav_link_style{
     font-size: small;
     color: #75787c;
 }
 
 .questions {
     background-color: #f1f2f3;
-    border-right: 3px solid #f48225;
+    border-right: 3px solid var(--theme_line);
     padding-left: 10px;
 }
 

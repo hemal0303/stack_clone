@@ -11,12 +11,12 @@
     align-self: center;
     padding-top: 6px;
     padding-bottom: 6px;
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
     text-decoration: none;
     border-radius: 3px;
     border: 1px solid #7aa7c7;
-    font-size: 15px;
+    font-size: 13px;
     color: #39739d;
     background-color: #e1ecf4;
     cursor: pointer;
@@ -31,12 +31,12 @@
     align-self: center;
     padding-top: 6px;
     padding-bottom: 6px;
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
     text-decoration: none;
     border-radius: 3px;
     border: 1px solid #7aa7c7;
-    font-size: 15px;
+    font-size: 13px;
     background-color: #0a95ff;
     cursor: pointer;
 }
@@ -44,4 +44,13 @@
 .btn_style_2:hover {
     background-color: #1580d1;
     cursor: pointer;
+}
+
+.main_title{
+    font-weight: normal;
+}
+
+.form-control{
+    border-radius: 2px;
+    line-height: 0.5rem;
 }
