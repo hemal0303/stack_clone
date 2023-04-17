@@ -29,6 +29,39 @@
         .minilogo {
             height: 50px;
         }
+        
+.message_center{
+    width: 25%;
+    margin: 0 35% 0;
+    z-index: 1;
+    position: absolute
+}
+
+.info-msg,
+.success-msg,
+.warning-msg,
+.error-msg {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px 5px 5px 5px;
+  display: inline-grid;
+}
+.info-msg {
+  color: #059;
+  background-color: #BEF;
+}
+.success-msg {
+  color: #270;
+  background-color: #DFF2BF;
+}
+.warning-msg {
+  color: #9F6000;
+  background-color: #FEEFB3;
+}
+.error-msg {
+  color: #D8000C;
+  background-color: #FFBABA;
+}
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
@@ -70,6 +103,30 @@
             </div>
         </nav>
     </header>
+    <center class="message_center">
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+            <div class="success-msg">
+                <i class="fa fa-check">{{message}}</i>
+            </div>
+            {% endif %}
+            {% if message.tags == 'error' %}
+            <div class="error-msg">
+                <i class="fa fa-times-circle">{{message}}</i>
+            </div>
+            {% endif %}
+            {% if message.tags == 'info' %}
+            <div class="info-msg">
+                <i class="fa fa-info-circle">{{message}}</i>
+            </div>
+            {% endif %}
+            {% if message.tags == 'debug' %}
+            <div class="warning-msg">
+                <i class="fa fa-warning">{{message}}</i>
+            </div>
+            {% endif %}         
+      {% endfor %}
+    </center>
     <section class="vh-100 gradient-custom" style="background-color: #f1f2f3;">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -110,15 +167,16 @@
 
                             <div class="mb-md-2 mt-md-2">
                                 <div class="card p-3" style="width: 280px;background-color: white;box-shadow: 1px 0px 10px 1px #cccccc;">
-                                    <form class="">
+                                    <form class="" method="post" action="{% url 'login' %}">
+                                        {% csrf_token %}
                                         <div class="form-group pt-3">
                                             <label for="exampleInputEmail1" class="pb-2"><b>Email address</b></label>
-                                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                                                 placeholder="Enter email">
                                         </div>
                                         <div class="form-group pt-3">
                                             <label for="exampleInputPassword1" class="pb-2"><b>Password</b></label>
-                                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                                         </div>
                                         <div class="form-group pt-3">
                                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -134,10 +192,15 @@
             </div>
         </div>
     </section>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
 </body>
+<script>
+    $(document).ready( function() {
+        $('.message_center').delay(5000).fadeOut();
+      });
 
+</script>
+</script>
 </html>

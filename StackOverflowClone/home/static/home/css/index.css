@@ -139,3 +139,37 @@ footer {
 .first_section {
     overflow: auto;
 }
+
+.message_center{
+    width: 25%;
+    margin: 0 35% 0;
+    z-index: 1;
+    position: absolute
+}
+
+.info-msg,
+.success-msg,
+.warning-msg,
+.error-msg {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px 5px 5px 5px;
+  display: inline-grid;
+  background: transparent;
+}
+.info-msg {
+  color: #059;
+  background-color: #BEF;
+}
+.success-msg {
+  color: #270;
+  background-color: #DFF2BF;
+}
+.warning-msg {
+  color: #9F6000;
+  background-color: #FEEFB3;
+}
+.error-msg {
+  color: #D8000C;
+  background-color: #FFBABA;
+}
