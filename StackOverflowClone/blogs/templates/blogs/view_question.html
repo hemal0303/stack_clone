@@ -1,4 +1,15 @@
-{% extends 'home/common.html' %}
+{% extends 'home/index.html' %}
 {% load static %}
-{% block body_content %}
+{% block content %}
+    <div class="row">
+        <h4 class="main_title col-sm-9">{{data.title}}</h4>
+        <a href="{% url 'post_question' 1 %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">edit</a>
+        <a href="{% url 'delete_question' 1 %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: brown !important; border-color: brown !important;">delete</a>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="pt-3" style="font-size: 13px;">{{data.body}}</p>
+        </div>
+    </div>
+    
 {% endblock %}
