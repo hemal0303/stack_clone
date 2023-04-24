@@ -6,7 +6,7 @@
 <!--Register--> 
 <div class="container py-5">
 	<h1>Ask a Question:</h1>
-	<form method="POST" action="{% url 'post_question' 0 %}">
+	<form method="POST" action="{% url 'post_question' question_id %}">
 		{% csrf_token %}
 		{{ form|crispy }}                    
 		<button class="btn btn-primary" type="submit">Post</button>

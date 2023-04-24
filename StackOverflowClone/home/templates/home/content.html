@@ -7,12 +7,13 @@
         <a href="{% url 'post_question' 0 %}" class="col-sm-2 text-light btn_style_2 center">Ask Question</a>
     </div>
     <div class="row">
+        {% for que in questions %}
         <div class="col-sm-12">
-            <p class="pt-3" style="font-size: 13px;">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Eum doloribus culpa atque molestiae adipisci incidunt dicta. Itaque minus a explicabo commodi perspiciatis,
-            non deserunt placeat, necessitatibus beatae dolorum voluptatem cum. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-            Magnam officiis dolor suscipit ad sint quaerat, sed facere est. Perferendis minus unde laboriosam repudiandae quae itaque recusandae libero, praesentium iusto nam?</p>
+
+        <a href="{% url 'view_question' que.id %}">{{ que.title }}</a>
+            <p class="pt-3" style="font-size: 13px;">{{ que.body }}</p>
         </div>
+        {% endfor %}
     </div>
 
 {% endblock %}
