@@ -23,8 +23,7 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
-    up_votes = models.BigIntegerField(default=0)
-    down_votes = models.FloatField(default=0)
+    votes = models.BigIntegerField(default=0)
     tags = models.ManyToManyField("Tags")
     is_deleted = models.BooleanField(default=False)
 
@@ -52,6 +51,31 @@ class PostAnswer(models.Model):
     question = models.ForeignKey(Post, on_delete=models.CASCADE)
     body = models.TextField()
     is_accepted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.question.title)
+
+
+class Comment(models.Model):
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
+    answer = models.ForeignKey(PostAnswer, on_delete=models.CASCADE, null=True, blank=True)
+
+
+class Vote(models.Model):
+    VOTE_TYPE = (
+        ("up", "Up"),
+        ("down", "Down"),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
+    vote_type = models.CharField(choices=VOTE_TYPE, max_length=20)
 
     def __str__(self):
         return str(self.question.title)

@@ -1,15 +1,23 @@
 {% extends 'home/index.html' %}
 {% load static %}
 {% block content %}
+<style>
+    .up_voted{
+        color: black;
+    }
+    .down_voted{
+        color: #dbdbdb;
+    }
+</style>
     <div class="row">
+        <div style="width: 5%; display:inline;">
+            <i class="fas fa-long-arrow-alt-up {% if voted == 'up' %}up_voted{% else %}down_voted{% endif %}"></i><p>{{ vote_count }}</p><i class="fas fa-long-arrow-alt-down {% if voted == 'down' %}up_voted{% else %}down_voted{% endif %}"></i>
+        </div>
+        <div style="width: 95%; display:inline;">
         <h4 class="main_title col-sm-9">{{data.title}}</h4>
+        <p class="pt-3" style="font-size: 13px;">{{data.body}}</p>
         <a href="{% url 'post_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">edit</a>
         <a href="{% url 'delete_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: brown !important; border-color: brown !important;">delete</a>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <p class="pt-3" style="font-size: 13px;">{{data.body}}</p>
         </div>
     </div>
-    
 {% endblock %}

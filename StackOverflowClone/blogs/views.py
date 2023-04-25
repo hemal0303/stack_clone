@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
-from .forms import QuestionForm
 from django.contrib import messages
-from .models import Post, PostAnswer, Tags
+from django.db.models import (Avg, Case, Count, F, FloatField, IntegerField, Q,
+                              Subquery, Sum, Value, When)
+from django.shortcuts import get_object_or_404, redirect, render
 from home.views import index
-from django.shortcuts import get_object_or_404
+
+from .forms import QuestionForm
+from .models import Post, PostAnswer, Tags, Vote
 
 
 # Create your views here.
@@ -20,6 +22,7 @@ def post_question(request, question_id):
             else QuestionForm(request.POST)
         )
         if form.is_valid():
+            print("request.user.id", request.user.id)
             question = form.save(commit=False)
             question.author_id = request.user.id
             question.save()
@@ -36,12 +39,22 @@ def post_question(request, question_id):
 def view_question(request, question_id):
     try:
         if question_id:
+            vote_count = None
+            voted = False
             data = (
                 Post.objects.filter(id=question_id)
-                .values("id", "title", "body")
+                .values("id", "title", "body", "votes")
                 .first()
             )
-            return render(request, "blogs/view_question.html", context={"data": data})
+            vote_count = Vote.objects.filter(question_id=question_id).values("question_id").annotate(
+                positive_votes=Sum(Case(When(vote_type='up', then=1), default=0, output_field=IntegerField())),
+                negative_votes=Sum(Case(When(vote_type='down', then=1), default=0, output_field=IntegerField())))
+            if vote_count:
+                vote_count = vote_count.aggregate(total=F('positive_votes') - F("negative_votes"))
+            if request.user.id:
+                voted = Vote.objects.filter(question_id=question_id, user_id=request.user.id).values("vote_type").first()
+                print("voted", voted)
+        return render(request, "blogs/view_question.html", context={"data": data, "vote_count": vote_count['total'] if vote_count else 0, "voted": voted['vote_type'] if voted else None})
     except Exception as e:
         print("Error", e)
 
