@@ -1,12 +1,11 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate
-from .backend import EmailAuthBackend
-from django.contrib import messages
-from .forms import NewUserForm
 from blogs.models import Post, PostAnswer, Tags
-
+from django.contrib import messages
 # Create your views here.
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect, render
+
+from .backend import EmailAuthBackend
+from .forms import NewUserForm
 
 
 def index(request):
@@ -15,7 +14,7 @@ def index(request):
             Post.objects.all()
             .values("title", "tags__name", "id", "body")
             .order_by("id")
-            .distinct("id")
+            # .distinct("id")
         )
         print("questions", questions)
         return render(request, "home/content.html", {"questions": questions})
@@ -30,6 +29,7 @@ def authcheck(request):
         backend = EmailAuthBackend()
         user = backend.authenticate(request, email=email, password=password)
         if user:
+            login(request, user, backend="home.backend.EmailAuthBackend")
             messages.success(request, "Logged in Successfully!")
             return redirect("/")
         else:
