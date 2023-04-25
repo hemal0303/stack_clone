@@ -1,11 +1,10 @@
 from django.contrib import messages
-from django.db.models import (Avg, Case, Count, F, FloatField, IntegerField, Q,
-                              Subquery, Sum, Value, When)
-from django.shortcuts import get_object_or_404, redirect, render
+from django.db.models import Case, F, IntegerField, Sum, When
+from django.shortcuts import redirect, render
 from home.views import index
 
 from .forms import QuestionForm
-from .models import Post, PostAnswer, Tags, Vote
+from .models import Post, Vote
 
 
 # Create your views here.
@@ -54,7 +53,8 @@ def view_question(request, question_id):
             if request.user.id:
                 voted = Vote.objects.filter(question_id=question_id, user_id=request.user.id).values("vote_type").first()
                 print("voted", voted)
-        return render(request, "blogs/view_question.html", context={"data": data, "vote_count": vote_count['total'] if vote_count else 0, "voted": voted['vote_type'] if voted else None})
+        return render(request, "blogs/view_question.html", context={"data": data, "vote_count": vote_count['total'] if vote_count else 0,
+                                                                    "voted": voted['vote_type'] if voted else None})
     except Exception as e:
         print("Error", e)
 
