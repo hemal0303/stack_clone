@@ -26,6 +26,7 @@ class Post(models.Model):
     up_votes = models.BigIntegerField(default=0)
     down_votes = models.FloatField(default=0)
     tags = models.ManyToManyField("Tags")
+    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         ordering = ("-published_on",)

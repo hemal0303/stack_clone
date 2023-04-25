@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from .backend import EmailAuthBackend
 from django.contrib import messages
 from .forms import NewUserForm
+from blogs.models import Post, PostAnswer, Tags
 
 # Create your views here.
 from django.contrib.auth import login
@@ -10,7 +11,14 @@ from django.contrib.auth import login
 
 def index(request):
     try:
-        return render(request, "home/content.html")
+        questions = (
+            Post.objects.all()
+            .values("title", "tags__name", "id", "body")
+            .order_by("id")
+            .distinct("id")
+        )
+        print("questions", questions)
+        return render(request, "home/content.html", {"questions": questions})
     except Exception as e:
         print("Error", e)
 

@@ -1,20 +1,56 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import QuestionForm
 from django.contrib import messages
+from .models import Post, PostAnswer, Tags
+from home.views import index
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
-def post_question(request):
-    print("request", request.method)
+def post_question(request, question_id):
+    post = Post.objects.get(id=question_id) if question_id != 0 else None
+    if post:
+        form = QuestionForm(instance=post)
+    else:
+        form = QuestionForm(request.POST)
+    if request.method == "POST":
+        form = (
+            QuestionForm(request.POST, instance=post)
+            if post
+            else QuestionForm(request.POST)
+        )
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.author_id = request.user.id
+            question.save()
+            messages.success(request, "Question has been updated.")
+            return redirect(view_question, question_id=question.id)
+
+    return render(
+        request,
+        "blogs/post_question.html",
+        context={"form": form, "question_id": question_id if question_id else 0},
+    )
+
+
+def view_question(request, question_id):
     try:
-        if request.method == "POST":
-            form = QuestionForm(request.POST)
-            if form.is_valid():
-                question = form.save(commit=False)
-                question.author_id = request.user.id
-                question.save()
-                messages.success(request, "Question has been posted.")
-        form = QuestionForm()
-        return render(request, "blogs/post_question.html", context={"form": form})
+        if question_id:
+            data = (
+                Post.objects.filter(id=question_id)
+                .values("id", "title", "body")
+                .first()
+            )
+            return render(request, "blogs/view_question.html", context={"data": data})
+    except Exception as e:
+        print("Error", e)
+
+
+def delete_question(request, question_id):
+    try:
+        if question_id:
+            Post.objects.filter(id=int(question_id)).update(is_deleted=True)
+            messages.success(request, "Question has been deleted.")
+            return redirect(index)
     except Exception as e:
         print("Error", e)

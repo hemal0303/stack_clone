@@ -2,3 +2,11 @@ settings.py
 .env
 *.pyc 
 db.sqlite3
+collectstatic.sh
+Dockerfile
+entrypoint.sh
+migrate.sh
+nginx.default
+docker-compose.yaml
+.vscode
+settings.json
