@@ -13,12 +13,11 @@ from .forms import NewUserForm
 def index(request):
     try:
         questions = (
-            Post.objects.all()
+            Post.objects.filter(is_deleted=False)
             .values("title", "tags__name", "id", "body")
             .order_by("id")
             # .distinct("id")
         )
-        print("questions", questions)
         return render(request, "home/content.html", {"questions": questions})
     except Exception as e:
         print("Error", e)
