@@ -1,8 +1,10 @@
-from blogs.models import Post
 from django.contrib import messages
+
 # Create your views here.
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
+
+from blogs.models import Post
 
 from .backend import EmailAuthBackend
 from .forms import NewUserForm

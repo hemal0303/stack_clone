@@ -11,7 +11,7 @@
 </style>
     <div class="row">
         <div style="width: 5%; display:inline;">
-            <i class="fas fa-long-arrow-alt-up {% if voted == 'up' %}up_voted{% else %}down_voted{% endif %}"></i><p>{{ vote_count }}</p><i class="fas fa-long-arrow-alt-down {% if voted == 'down' %}up_voted{% else %}down_voted{% endif %}"></i>
+            <i id="up_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-up {% if voted == 'up' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event,'{{ data.id }}', 'up')"></i><p id="vote_count">{{ vote_count }}</p><i id="down_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-down {% if voted == 'down' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event, '{{ data.id }}', 'down')"></i>
         </div>
         <div style="width: 95%; display:inline;">
         <h4 class="main_title col-sm-9">{{data.title}}</h4>
@@ -20,4 +20,54 @@
         <a href="{% url 'delete_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: brown !important; border-color: brown !important;">delete</a>
         </div>
     </div>
+    <script>
+        function VotePost(event, post_id, vote_type){
+            event.stopPropagation();
+            var postData = {
+                "vote_type": vote_type,
+            }
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/blogs/vote_question/" + post_id + '/',
+                data: postData,
+                success: function (data) {
+                    if (data.code == 401){
+                        window.location = "/login/";
+                    }
+                    if (data.code == 1) {
+                        $("#vote_count").text(data.vote_count)
+                        if (data.voted == true && vote_type == 'up'){
+                            $("#up_vote_icon").removeClass("down_voted")
+                            $("#up_vote_icon").addClass("up_voted")
+                            $("#down_vote_icon").removeClass("up_voted")
+                            $("#down_vote_icon").addClass("down_voted")
+                        }
+                        if (data.voted == false && vote_type == 'up') {
+                            $("#up_vote_icon").removeClass("up_voted")
+                            $("#up_vote_icon").addClass("down_voted")
+                        }
+                        if (data.voted == true && vote_type == 'down'){
+                            $("#down_vote_icon").removeClass("down_voted")
+                            $("#down_vote_icon").addClass("up_voted")
+                            $("#up_vote_icon").removeClass("up_voted")
+                            $("#up_vote_icon").addClass("down_voted")
+                        }
+                        if (data.voted == false && vote_type == 'down') {
+                            $("#down_vote_icon").removeClass("up_voted")
+                            $("#down_vote_icon").addClass("down_voted")
+                        }
+                    }
+                    if (data.code == 0) {
+                        showMessage(
+                            "msg",
+                            "danger",
+                            data.msg,
+                            5
+                        );
+                    }
+                }
+            });
+        }
+    </script>
 {% endblock %}
