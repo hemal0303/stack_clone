@@ -10,9 +10,9 @@ urlpatterns = [
         views.delete_question,
         name="delete_question",
     ),
-    # path(
-    #     "update_question/<int:question_id>/",
-    #     views.update_question,
-    #     name="update_question",
-    # ),
+    path(
+        "vote_question/<int:question_id>/",
+        views.vote_question,
+        name="vote_question",
+    ),
 ]

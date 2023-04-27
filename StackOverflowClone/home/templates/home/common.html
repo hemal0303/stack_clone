@@ -51,6 +51,7 @@
         </nav>
     </header>
     <center class="message_center">
+        <div class="alert-error" style="display:none; text-align: center;margin-top: 20px;" id="msg"></div>
         {% for message in messages %}
             {% if message.tags == 'success' %}
             <div class="success-msg">
@@ -134,9 +135,35 @@
 
 </body>
 <script>
-    $(document).ready( function() {
-        $('.message_center').delay(5000).fadeOut();
-      });
+    function showMessage(id, type, msg, time) {
+            $("#" + id)
+                .text(msg)
+                .removeClass();
+
+            if (type == "danger") {
+                $("#" + id)
+                    .html(
+                        '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' +
+                        " " +
+                        msg
+                    )
+                    .addClass("alert alert-danger")
+                    .show();
+            } else {
+                $("#" + id)
+                    .html(
+                        '<i class="fa fa-check-square-o" aria-hidden="true"></i>' + " " + msg
+                    )
+                    .addClass("alert alert-success")
+                    .show();
+            }
+
+            if (time) {
+                setTimeout(function () {
+                    $("#" + id).hide();
+                }, time * 1000);
+            }
+        }
 
 </script>
 
