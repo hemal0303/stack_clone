@@ -135,6 +135,11 @@
 
 </body>
 <script>
+    
+    $(document).ready( function() {
+        $('.message_center').delay(5000).fadeOut();
+      });
+
     function showMessage(id, type, msg, time) {
             $("#" + id)
                 .text(msg)

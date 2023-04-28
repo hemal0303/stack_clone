@@ -16,7 +16,7 @@ def index(request):
             Post.objects.filter(is_deleted=False)
             .values("title", "tags__name", "id", "body")
             .order_by("id")
-            # .distinct("id")
+            .distinct("id")
         )
         return render(request, "home/content.html", {"questions": questions})
     except Exception as e:

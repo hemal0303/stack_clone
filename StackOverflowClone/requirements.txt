@@ -10,3 +10,4 @@ python-dotenv
 django-crispy-forms
 django-environ
 crispy_bootstrap4
+whitenoise
