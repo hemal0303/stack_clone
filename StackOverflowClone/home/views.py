@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 
+from blogs.documents import PostDocument
 from blogs.models import Post
 
 from .backend import EmailAuthBackend
@@ -12,13 +13,33 @@ from .forms import NewUserForm
 
 def index(request):
     try:
-        questions = (
-            Post.objects.filter(is_deleted=False)
-            .values("title", "tags__name", "id", "body")
-            .order_by("id")
-            .distinct("id")
-        )
-        return render(request, "home/content.html", {"questions": questions})
+        question_search = request.GET.get("question_search")
+        search_fields = {}
+        questions = []
+        if question_search:
+            elastic_data = PostDocument.search().query("match", title=question_search)
+            print("elastic_data", elastic_data)
+            for post in elastic_data:
+                questions.append(
+                    {
+                        "id": post.id,
+                        "title": post.title,
+                        "body": post.body,
+                    }
+                )
+            search_fields = {
+                "title__icontains": question_search,
+            }
+        if len(questions) == 0:
+            search_fields["is_deleted"] = False
+            questions = (
+                Post.objects.filter(**search_fields)
+                .values("title", "tags__name", "id", "body")
+                .order_by("id")
+                # .distinct("id")
+            )
+            print("used query")
+        return render(request, "home/content.html", {"questions": questions, "question_search": question_search})
     except Exception as e:
         print("Error", e)
 

@@ -15,5 +15,11 @@
         </div>
         {% endfor %}
     </div>
-
+<script>
+    var question_search = '{{ question_search }}'
+    console.log("question_search", question_search);
+    if (question_search != 'None'){
+    $("#question_search").val(question_search)
+    }
+</script>
 {% endblock %}

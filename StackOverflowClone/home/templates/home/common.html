@@ -41,8 +41,8 @@
                             <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}">For Teams</a>
                         </li>
                     </ul>
-                    <form class="nav_searchbar" role="search" style="flex-grow: 1;">
-                        <input class="form-control search_bar_input" type="search" placeholder="&#xF002; Search..." style="font-family:Arial, FontAwesome" aria-label="Search">
+                    <form action="/" class="nav_searchbar" role="search" style="flex-grow: 1;">
+                        <input class="form-control search_bar_input" id='question_search' name="question_search" type="search" placeholder="&#xF002; Search..." style="font-family:Arial, FontAwesome" aria-label="Search">
                     </form>
                     <a href="{% url 'login' %}" class="center btn_style_1" style="text-decoration: none;margin-left: 5px;">Log in</a>
                     <a href="{% url 'register' %}" class="text-light btn_style_2 center" style="text-decoration: none;margin-left: 5px;">Sign Up</a>
@@ -135,7 +135,7 @@
 
 </body>
 <script>
-    
+
     $(document).ready( function() {
         $('.message_center').delay(5000).fadeOut();
       });
