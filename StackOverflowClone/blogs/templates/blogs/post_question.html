@@ -4,6 +4,14 @@
 {% load crispy_forms_tags %}         
 
 <!--Register--> 
+<style>
+	#id_body{
+		line-height: 1.5rem !important;
+	}
+	#div_id_body{
+		margin-bottom: 10px;
+	}
+</style>
 <div class="container py-5">
 	<h1>Ask a Question:</h1>
 	<form method="POST" action="{% url 'post_question' question_id %}">
