@@ -1,4 +1,4 @@
-Django==4.1.7
+Django==3.2
 gunicorn
 requests
 django-dotenv
@@ -11,3 +11,6 @@ django-crispy-forms
 django-environ
 crispy_bootstrap4
 whitenoise
+django-elasticsearch-dsl==7.2.1
+elasticsearch==7.16.2
+elasticsearch-dsl==7.4.0

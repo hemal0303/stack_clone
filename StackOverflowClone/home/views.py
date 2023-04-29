@@ -1,7 +1,7 @@
 from django.contrib import messages
 
 # Create your views here.
-from django.contrib.auth import login,logout
+from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render
 
 from blogs.documents import PostDocument
@@ -38,10 +38,19 @@ def index(request):
                 Post.objects.filter(**search_fields)
                 .values("title", "tags__name", "id", "body")
                 .order_by("id")
-                # .distinct("id")
+                .distinct("id")
             )
             print("used query")
-        return render(request, "home/content.html", {"questions": questions, "question_search": question_search, "user_name":user_name, "user_id":user_id})
+        return render(
+            request,
+            "home/content.html",
+            {
+                "questions": questions,
+                "question_search": question_search,
+                "user_name": user_name,
+                "user_id": user_id,
+            },
+        )
     except Exception as e:
         print("Error", e)
 
@@ -86,6 +95,6 @@ def signout(request):
         logout(request)
         messages.success(request, "Logout Successfully!")
         return redirect("/")
-        
+
     except Exception as e:
-        print("logont error--",e)
+        print("logout error--", e)

@@ -17,5 +17,4 @@ class PostDocument(Document):
             # your fields here
             "id",
             "title",
-            "body",
         ]
