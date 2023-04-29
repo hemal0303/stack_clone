@@ -46,7 +46,7 @@
                     </form>
                     
                     {% if request.user.is_authenticated %}
-                    <div style="color: white; padding-left: 10px;"><i class="fa fa-user" style="padding-right: 5px;"></i>{{ request.user }}</div>
+                    <div style="color: white; padding-left: 10px;"><i class="fa fa-user" style="padding-right: 5px;"></i>{{ request.user.first_name }} {{ request.user.last_name }}</div>
                     <a href="{% url 'signout' %}" class="center btn_style_1" style="text-decoration: none;margin-left: 5px;padding-left: 10px;">Logout</a>
                     {% else %}
                     <a href="{% url 'login' %}" class="center btn_style_1" style="text-decoration: none;margin-left: 5px;">Log in</a>
