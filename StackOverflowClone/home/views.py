@@ -8,13 +8,12 @@ from blogs.documents import PostDocument
 from blogs.models import Post
 from .backend import EmailAuthBackend
 from .forms import NewUserForm
+from blogs.utils import paginatePost
 
 
 def index(request):
     try:
-        user_id = request.user.id
-        user_name = request.user
-
+        pagesize = request.GET.get("pagesize")
         question_search = request.GET.get("question_search")
         search_fields = {}
         questions = []
@@ -25,7 +24,6 @@ def index(request):
                     {
                         "id": post.id,
                         "title": post.title,
-                        "body": post.body,
                     }
                 )
             search_fields = {
@@ -39,12 +37,15 @@ def index(request):
                 .order_by("id")
                 .distinct("id")
             )
+        custom_range, questions = paginatePost(request, questions, pagesize)
         return render(
             request,
             "home/content.html",
             {
                 "questions": questions,
                 "question_search": question_search,
+                "custom_range": custom_range,
+                "pagesize": pagesize,
             },
         )
     except Exception as e:

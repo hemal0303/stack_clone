@@ -13,8 +13,6 @@ from .models import Post, Vote
 # Create your views here.
 @login_required(login_url="/login/")
 def post_question(request, question_id):
-    user_id = request.user.id
-    user_name = request.user
     post = Post.objects.get(id=question_id) if question_id != 0 else None
     if post:
         form = QuestionForm(instance=post)
@@ -41,8 +39,6 @@ def post_question(request, question_id):
 
 def view_question(request, question_id):
     try:
-        user_id = request.user.id
-        user_name = request.user
         if question_id:
             vote_count = None
             voted = False

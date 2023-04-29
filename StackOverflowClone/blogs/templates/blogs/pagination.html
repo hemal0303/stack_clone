@@ -1,0 +1,70 @@
+<style>
+  .pagination {
+  margin-top: 8rem;
+  margin-bottom: 10rem;
+}
+
+.pagination > ul {
+  flex-wrap: wrap;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.pagination .btn {
+  color: var(--color-sub);
+}
+
+.pagination .btn.btn--sub {
+  color: var(--color-light);
+}
+.btn--sub {
+  background-color: #0a95ff;
+  color: var(--color-);
+}
+</style>
+{% if queryset.has_other_pages %}
+    <div class="pagination">
+      <ul class="container">
+        {% if queryset.has_previous %}
+          {% if question_search %}
+            <li><a href="{% if pagesize %}?question_search={{question_search}}&page={{queryset.previous_page_number}}&pagesize={{pagesize}}{%else%}?page={{queryset.previous_page_number}}{% endif %}" class="btn page-link" data-page="{{queryset.previous_page_number}}">&#10094; Prev</a></li>
+          {% else %}
+            <li><a href="{% if pagesize %}?page={{queryset.previous_page_number}}&pagesize={{pagesize}}{%else%}?page={{queryset.previous_page_number}}{% endif %}" class="btn page-link" data-page="{{queryset.previous_page_number}}">&#10094; Prev</a></li>
+          {% endif %}
+
+        {% endif %}
+
+
+        {% for page in custom_range %}
+
+        {% if page == queryset.number %}
+          {% if question_search %}
+            <li><a href="{% if pagesize %}?question_search={{question_search}}&page={{page}}&pagesize={{pagesize}}{%else%}?question_search={{question_search}}&page={{page}}{% endif %}" class="btn page-link btn--sub" data-page="{{page}}">{{page}}</a></li>
+          {% else %}
+          <li><a href="{% if pagesize %}?&page={{page}}&pagesize={{pagesize}}{%else%}?&page={{page}}{% endif %}" class="btn page-link btn--sub" data-page="{{page}}">{{page}}</a></li>
+          {% endif %}
+        {% else %}
+        {% if question_search %}
+            <li><a href="{% if pagesize %}?question_search={{question_search}}&page={{page}}&pagesize={{pagesize}}{%else%}?question_search={{question_search}}&page={{page}}{% endif %}" class="btn page-link" data-page="{{page}}">{{page}}</a></li>
+          {% else %}
+          <li><a href="{% if pagesize %}?&page={{page}}&pagesize={{pagesize}}{%else%}?&page={{page}}{% endif %}" class="btn page-link" data-page="{{page}}">{{page}}</a></li>
+          {% endif %}
+        {% endif %}
+        {% endfor %}
+
+        {% if queryset.has_next %}
+          {% if question_search %}
+          <li><a href="{% if pagesize %}?question_search={{question_search}}&page={{queryset.next_page_number}}&pagesize={{pagesize}}{%else%}?page={{queryset.next_page_number}}{% endif %}" class="btn page-link" data-page="{{queryset.next_page_number}}">Next &#10095;</a></li>
+          {% else %}
+            <li><a href="{% if pagesize %}?page={{queryset.next_page_number}}&pagesize={{pagesize}}{%else%}?page={{queryset.next_page_number}}{% endif %}" class="btn page-link" data-page="{{queryset.next_page_number}}">Next &#10095;</a></li>
+          {% endif %}
+
+        {% endif %}
+
+
+      </ul>
+    </div>
+    {% endif %}
