@@ -12,6 +12,8 @@
 		margin-bottom: 10px;
 	}
 </style>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 <div class="container py-5">
 	<h1>Ask a Question:</h1>
 	<form method="POST" action="{% url 'post_question' question_id %}">

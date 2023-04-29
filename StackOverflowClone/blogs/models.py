@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
+from ckeditor.fields import RichTextField
 
 
 def validate_entry(value):
@@ -15,8 +16,10 @@ class Post(models.Model):
         ("published", "Published"),
     )
     title = models.CharField(max_length=250)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="blog_posts")
-    body = models.TextField()
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="blog_posts"
+    )
+    body = RichTextField()
     published_on = models.DateTimeField(null=True, blank=True)
     drafted_on = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -48,7 +51,7 @@ class MaintenanceMode(models.Model):
 
 class PostAnswer(models.Model):
     question = models.ForeignKey(Post, on_delete=models.CASCADE)
-    body = models.TextField()
+    body = RichTextField()
     is_accepted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -64,7 +67,9 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
-    answer = models.ForeignKey(PostAnswer, on_delete=models.CASCADE, null=True, blank=True)
+    answer = models.ForeignKey(
+        PostAnswer, on_delete=models.CASCADE, null=True, blank=True
+    )
 
 
 class Vote(models.Model):

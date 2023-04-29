@@ -1,7 +1,7 @@
 from django.contrib import messages
 
 # Create your views here.
-from django.contrib.auth import login,logout
+from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render
 
 from blogs.documents import PostDocument
@@ -20,7 +20,6 @@ def index(request):
         questions = []
         if question_search:
             elastic_data = PostDocument.search().query("match", title=question_search)
-            print("elastic_data", elastic_data)
             for post in elastic_data:
                 questions.append(
                     {
@@ -38,10 +37,16 @@ def index(request):
                 Post.objects.filter(**search_fields)
                 .values("title", "tags__name", "id", "body")
                 .order_by("id")
-                # .distinct("id")
+                .distinct("id")
             )
-            print("used query")
-        return render(request, "home/content.html", {"questions": questions, "question_search": question_search, "user_name":user_name, "user_id":user_id})
+        return render(
+            request,
+            "home/content.html",
+            {
+                "questions": questions,
+                "question_search": question_search,
+            },
+        )
     except Exception as e:
         print("Error", e)
 
@@ -82,10 +87,9 @@ def register(request):
 def signout(request):
     try:
         request_userId = request.user.id
-        print("request_userId", request_userId)
         logout(request)
         messages.success(request, "Logout Successfully!")
         return redirect("/")
-        
+
     except Exception as e:
-        print("logont error--",e)
+        print("logout error--", e)
