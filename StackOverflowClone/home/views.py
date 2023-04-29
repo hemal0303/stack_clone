@@ -1,18 +1,20 @@
 from django.contrib import messages
 
 # Create your views here.
-from django.contrib.auth import login
+from django.contrib.auth import login,logout
 from django.shortcuts import redirect, render
 
 from blogs.documents import PostDocument
 from blogs.models import Post
-
 from .backend import EmailAuthBackend
 from .forms import NewUserForm
 
 
 def index(request):
     try:
+        user_id = request.user.id
+        user_name = request.user
+
         question_search = request.GET.get("question_search")
         search_fields = {}
         questions = []
@@ -39,7 +41,7 @@ def index(request):
                 # .distinct("id")
             )
             print("used query")
-        return render(request, "home/content.html", {"questions": questions, "question_search": question_search})
+        return render(request, "home/content.html", {"questions": questions, "question_search": question_search, "user_name":user_name, "user_id":user_id})
     except Exception as e:
         print("Error", e)
 
@@ -51,6 +53,7 @@ def authcheck(request):
         backend = EmailAuthBackend()
         user = backend.authenticate(request, email=email, password=password)
         if user:
+            logout(request)
             login(request, user, backend="home.backend.EmailAuthBackend")
             messages.success(request, "Logged in Successfully!")
             return redirect("/")
@@ -74,3 +77,15 @@ def register(request):
         return render(request, "home/register.html", context={"register_form": form})
     except Exception as e:
         print("Error", e)
+
+
+def signout(request):
+    try:
+        request_userId = request.user.id
+        print("request_userId", request_userId)
+        logout(request)
+        messages.success(request, "Logout Successfully!")
+        return redirect("/")
+        
+    except Exception as e:
+        print("logont error--",e)

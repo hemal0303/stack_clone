@@ -44,8 +44,14 @@
                     <form action="/" class="nav_searchbar" role="search" style="flex-grow: 1;">
                         <input class="form-control search_bar_input" id='question_search' name="question_search" type="search" placeholder="&#xF002; Search..." style="font-family:Arial, FontAwesome" aria-label="Search">
                     </form>
+                    
+                    {% if user_id %}
+                    <div style="color: white; padding-left: 10px;"><i class="fa fa-user" style="padding-right: 5px;"></i>{{ user_name }}</div>
+                    <a href="{% url 'signout' %}" class="center btn_style_1" style="text-decoration: none;margin-left: 5px;padding-left: 10px;">Logout</a>
+                    {% else %}
                     <a href="{% url 'login' %}" class="center btn_style_1" style="text-decoration: none;margin-left: 5px;">Log in</a>
                     <a href="{% url 'register' %}" class="text-light btn_style_2 center" style="text-decoration: none;margin-left: 5px;">Sign Up</a>
+                    {% endif %}
                 </div>
             </div>
         </nav>
@@ -135,7 +141,8 @@
 
 </body>
 <script>
-
+    var userId = '{{user_id}}';
+    console.log("data", userId);
     $(document).ready( function() {
         $('.message_center').delay(5000).fadeOut();
       });

@@ -13,6 +13,8 @@ from .models import Post, Vote
 # Create your views here.
 @login_required(login_url="/login/")
 def post_question(request, question_id):
+    user_id = request.user.id
+    user_name = request.user
     post = Post.objects.get(id=question_id) if question_id != 0 else None
     if post:
         form = QuestionForm(instance=post)
@@ -29,12 +31,14 @@ def post_question(request, question_id):
     return render(
         request,
         "blogs/post_question.html",
-        context={"form": form, "question_id": question_id if question_id else 0},
+        context={"form": form, "question_id": question_id if question_id else 0, "user_name":user_name, "user_id":user_id},
     )
 
 
 def view_question(request, question_id):
     try:
+        user_id = request.user.id
+        user_name = request.user
         if question_id:
             vote_count = None
             voted = False
@@ -52,7 +56,7 @@ def view_question(request, question_id):
             if request.user.id:
                 voted = Vote.objects.filter(question_id=question_id, user_id=request.user.id).values("vote_type").first()
         return render(
-            request, "blogs/view_question.html", context={"data": data, "vote_count": vote_count["total"] if vote_count else 0, "voted": voted["vote_type"] if voted else None}
+            request, "blogs/view_question.html", context={"data": data, "vote_count": vote_count["total"] if vote_count else 0, "voted": voted["vote_type"] if voted else None, "user_name":user_name, "user_id":user_id}
         )
     except Exception as e:
         print("Error", e)
