@@ -20,7 +20,6 @@ def index(request):
         questions = []
         if question_search:
             elastic_data = PostDocument.search().query("match", title=question_search)
-            print("elastic_data", elastic_data)
             for post in elastic_data:
                 questions.append(
                     {
@@ -40,15 +39,12 @@ def index(request):
                 .order_by("id")
                 .distinct("id")
             )
-            print("used query")
         return render(
             request,
             "home/content.html",
             {
                 "questions": questions,
                 "question_search": question_search,
-                "user_name": user_name,
-                "user_id": user_id,
             },
         )
     except Exception as e:
@@ -91,7 +87,6 @@ def register(request):
 def signout(request):
     try:
         request_userId = request.user.id
-        print("request_userId", request_userId)
         logout(request)
         messages.success(request, "Logout Successfully!")
         return redirect("/")
