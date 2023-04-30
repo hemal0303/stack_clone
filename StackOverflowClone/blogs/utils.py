@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 def paginatePost(request, posts, results):
     if not results:
-        results = 5
+        results = 6
     page = request.GET.get("page")
     paginator = Paginator(posts, results)
 
@@ -22,7 +22,7 @@ def paginatePost(request, posts, results):
     if leftIndex < 1:
         leftIndex = 1
 
-    rightIndex = int(page) + 5
+    rightIndex = int(page) + 6
     if rightIndex > paginator.num_pages:
         rightIndex = paginator.num_pages + 1
 

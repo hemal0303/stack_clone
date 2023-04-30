@@ -1,0 +1,28 @@
+{% extends 'home/common.html' %}
+{% load static %}
+{% block body_content %}
+{% load crispy_forms_tags %}
+
+<!--Register--> 
+<style>
+
+
+</style>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<div class="container py-5">
+    <h1>Post a answer:</h1>
+    <h4 style="color: hsl(205,47%,42%);">{{question.title}}</h4>
+    <p style="padding-left: 5px;">{{question.body}}</p>
+    <form method="POST" action="{% url 'post_answer' question.id answer_id %}">
+		{% csrf_token %}
+		{{ form|crispy }}  
+		<br>
+		<br>               
+		<button class="btn btn-primary" type="submit">Post answer</button>
+		<button class="btn btn-primary" type="submit">Save as a Draft</button>
+	</form>
+</div>
+
+
+{% endblock %}

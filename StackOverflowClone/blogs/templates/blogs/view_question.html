@@ -9,16 +9,56 @@
         color: #dbdbdb;
     }
 </style>
-    <div class="row">
-        <div style="width: 5%; display:inline;">
+    <div class="row" style="margin-bottom: 40px;">
+        <div style="width: 5%; display:inline">
             <i id="up_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-up {% if voted == 'up' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event,'{{ data.id }}', 'up')"></i><p id="vote_count">{{ vote_count }}</p><i id="down_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-down {% if voted == 'down' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event, '{{ data.id }}', 'down')"></i>
         </div>
         <div style="width: 95%; display:inline;">
-        <h4 class="main_title col-sm-9">{{data.title}}</h4>
-        <p class="pt-3" style="font-size: 13px;">{{data.body | safe}}</p>
-        <a href="{% url 'post_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">edit</a>
-        <a href="{% url 'delete_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: brown !important; border-color: brown !important;">delete</a>
+            <h4 class="main_title col-sm-9">{{data.title}}</h4>
+            <p class="pt-3" style="font-size: 13px;">{{data.body | safe}}</p>
+            <div style="float: right;font-size: 10px;">
+                {% if data.updated %}<span>edited &nbsp; {{data.updated}}</span><br>{% endif %}
+                <span >created &nbsp; {{data.created}}</span><br>
+                <i class="fa fa-user"></i>&nbsp; {{data.author__first_name}}&nbsp;{{data.author__last_name}}
+            </div>
+            {% if data.author == login_user_id %}
+            <a href="{% url 'post_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">edit</a>
+            <a href="{% url 'delete_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: brown !important; border-color: brown !important;">delete</a>
+            {% endif %}
+            {% if data.author != login_user_id %}
+            <a href="{% url 'answer_form' data.id 0 %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: #0a95ff !important; border-color: #0a95ff !important;">Your answer</a>
+            {% endif %}
         </div>
+
+    </div>
+    <div class="row">
+        <h6>{{total_answer}} &nbsp; Answer</h6>
+        {% for data in answer_data %}
+        <div style="width: 95%; display:inline;border-bottom: 1px solid #c0c0c0;padding-bottom: 10px;">
+            
+            <div style="margin-left: 25px;">
+                <!-- <h4 class="main_title col-sm-9">{{data}}</h4> -->
+                <p class="pt-3" style="font-size: 13px;">
+                    {% if data.is_accepted %} 
+                    <i class="fa fa-check fa-2x" style="color: green;"></i> 
+                    {% endif %} 
+                    &nbsp; &nbsp; {{data.body | safe}}
+                </p>
+                <div style="float: right;font-size: 10px;">
+                    <span>edited &nbsp; {{data.updated_at}}</span><br>
+                    <span >answered &nbsp; {{data.created_at}}</span><br>
+                    <i class="fa fa-user"></i>&nbsp; {{data.author__first_name}}&nbsp;{{data.author__last_name}}
+                </div>
+
+                <!-- <div style="float: right;">
+                    <i class="fa fa-user">{{data.author__first_name}} &nbsp; {{data.author__last_name}}</i>
+                </div> -->
+                {% if data.author == login_user_id %}
+                    <a href="{% url 'answer_form' data.question data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">Edit answer</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
     </div>
     <script>
         function VotePost(event, post_id, vote_type){
