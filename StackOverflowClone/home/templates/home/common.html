@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="{% static 'home/css/util.css' %}">
 
     <style>
+        * {
+        font-family: sans-serif;
+        }
     </style>
 </head>
 
@@ -23,14 +26,15 @@
     <header>
         <nav class="navbar navbar-expand-lg" style="box-shadow: 1px 4px 4px rgb(218, 218, 218);">
             <div class="container nav_align">
-                <!-- <img src="{% static 'home/img/stackoverflow_logo_2.png' %}" class="logo" alt="logo"> -->
+                <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}">
+                <img src="{% static 'home/img/homelogo.png' %}" class="logo" alt="logo" style="width: 175px !important;"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item nav_hover">
                             <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}">About</a>
                         </li>
@@ -40,9 +44,9 @@
                         <li class="nav-item nav_hover">
                             <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}">For Teams</a>
                         </li>
-                    </ul>
+                    </ul> -->
                     <form action="/" class="nav_searchbar" role="search" style="flex-grow: 1;">
-                        <input class="form-control search_bar_input" id='question_search' name="question_search" type="search" placeholder="&#xF002; Search..." style="font-family:Arial, FontAwesome" aria-label="Search">
+                        <input class="form-control search_bar_input" id='question_search' name="question_search" type="search" placeholder="Search..." style="font-family:sans-serif" aria-label="Search">
                     </form>
                     
                     {% if request.user.is_authenticated %}
