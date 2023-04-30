@@ -14,6 +14,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{% static 'home/css/index.css' %}">
     <link rel="stylesheet" href="{% static 'home/css/util.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/common.css' %}">
 
     <style>
         * {
@@ -49,7 +50,7 @@
                         <input class="form-control search_bar_input" id='question_search' name="question_search" type="search" placeholder="Search..." style="font-family:sans-serif" aria-label="Search">
                     </form>
                     
-                    {% if request.user.is_authenticated %}
+                    {% if request.user.is_authenticated  %}
                     <div style="color: white; padding-left: 10px;"><i class="fa fa-user" style="padding-right: 5px;"></i>{{ request.user.first_name }} {{ request.user.last_name }}</div>
                     <a href="{% url 'signout' %}" class="center btn_style_1" style="text-decoration: none;margin-left: 5px;padding-left: 10px;">Logout</a>
                     {% else %}
@@ -91,9 +92,6 @@
     <footer>
         <div class="container">
             <div class="row">
-                <div class="col-sm-1 pt-2" style="text-align: right;">
-                    <!-- <img src="{% static 'home/img/minilogo.svg.png' %}" class="minilogo" alt="logo"> -->
-                </div>
                 <div class="col-sm-2 pt-4">
                     <p><a class="footer_title" href="#">NEW TITLE</a></p>
                     <span><a class="footer_details" href="#">Questions</a></span><br>
@@ -109,29 +107,22 @@
                 <div class="col-sm-2 pt-4">
                     <p><a class="footer_title" href="#">SOMETHING</a></p>
                     <span><a class="footer_details" href="#">About</a></span><br>
-                    <span><a class="footer_details" href="#">Press</a></span><br>
                     <span><a class="footer_details" href="#">Work Here</a></span><br>
                     <span><a class="footer_details" href="#">Legal</a></span><br>
                     <span><a class="footer_details" href="#">Privacy Policy</a></span><br>
                     <span><a class="footer_details" href="#">Terms of Service</a></span><br>
                     <span><a class="footer_details" href="#">Contact Us</a></span><br>
-                    <span><a class="footer_details" href="#">Cookie Settings</a></span><br>
-                    <span><a class="footer_details" href="#">Cookie Policy</a></span><br>
                 </div>
                 <div class="col-sm-2 pt-4">
-                    <p><a class="footer_title" href="#">EXAMPLE TEXT</a></p>
-                    <span><a class="footer_details" href="#">Technology</a></span><br>
-                    <span><a class="footer_details" href="#">Culture & recreation</a></span><br>
-                    <span><a class="footer_details" href="#">Life & arts</a></span><br>
-                    <span><a class="footer_details" href="#">Science</a></span><br>
-                    <span><a class="footer_details" href="#">Professional</a></span><br>
-                    <span><a class="footer_details" href="#">Business</a></span><br><br>
+                    <p><a class="footer_title" href="#">Network</a></p>
                     <span><a class="footer_details" href="#">API</a></span><br>
                     <span><a class="footer_details" href="#">Data</a></span><br>
                 </div>
                 <div class="col-sm-3 pt-4">
-                    &nbsp;&nbsp;
-                    <span><a class="footer_details" href="#">Blog</a></span>&nbsp;
+                    <div class="col-sm-1 pt-2" style="text-align: right;">
+                        <img src="{% static 'home/img/logo.png' %}" alt="logo">
+                    </div>
+                    <!-- <span><a class="footer_details" href="#">Blog</a></span>&nbsp; -->
                     <span><a class="footer_details" href="#">Facebook</a></span>&nbsp;
                     <span><a class="footer_details" href="#">Twitter</a></span>&nbsp;
                     <span><a class="footer_details" href="#">LinkedIn</a></span>&nbsp;

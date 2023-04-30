@@ -6,9 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 from home import manager
 from home.views import index
 import logging
-from .forms import QuestionForm
-from .models import Post, Vote, Tags
-
+from .forms import QuestionForm, AnswerForm
+from .models import Post, Vote, Tags, PostAnswer
+from blogs.utils import paginatePost
 
 # Create your views here.
 @login_required(login_url="/login/")
@@ -44,12 +44,13 @@ def post_question(request, question_id):
 
 def view_question(request, question_id):
     try:
+        user_id = request.user.id
         if question_id:
             vote_count = None
             voted = False
             data = (
                 Post.objects.filter(id=question_id)
-                .values("id", "title", "body", "votes")
+                .values("id", "title", "body", "votes", "author","author__first_name","author__last_name", "created", "updated")
                 .first()
             )
             vote_count = (
@@ -84,6 +85,7 @@ def view_question(request, question_id):
                     .values("vote_type")
                     .first()
                 )
+            answer_data = PostAnswer.objects.filter(question_id=question_id).values("id","question","body","author","author__first_name","author__last_name","updated_at","is_accepted","created_at")
         return render(
             request,
             "blogs/view_question.html",
@@ -91,6 +93,9 @@ def view_question(request, question_id):
                 "data": data,
                 "vote_count": vote_count["total"] if vote_count else 0,
                 "voted": voted["vote_type"] if voted else None,
+                "answer_data":answer_data,
+                "total_answer": len(answer_data),
+                "login_user_id":user_id,
             },
         )
     except Exception as e:
@@ -235,6 +240,66 @@ def search_tags(request):
                     )
             return JsonResponse({"code": 1, "data": response})
         return JsonResponse({"code": 0, "msg": "Something went wrong"})
+    except Exception as e:
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
+
+@login_required(login_url="/login/")
+def tags_list(request):
+    try:
+        pagesize = request.GET.get("pagesize")
+        tags = Tags.objects.all()
+        custom_range, tags = paginatePost(request, tags, pagesize)
+
+        return render(
+            request,
+            "blogs/tags.html",
+            {
+                "tags": tags,
+                "custom_range": custom_range,
+                "pagesize": pagesize,
+            },
+        )
+    except Exception as e:
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
+
+@login_required(login_url="/login/")
+def answer_form(request,question_id,answer_id):
+    try:
+        answer = PostAnswer.objects.get(id=answer_id) if answer_id != 0 else None
+        question = Post.objects.filter(id=question_id).values("title", "body","id").first()
+        form = AnswerForm(instance=answer)
+        if question_id:
+            return render(
+                request,
+                "blogs/post_answer.html",
+                context={"form": form, "question": question,"answer_id":answer_id},
+            )
+    except Exception as e:
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
+
+@login_required(login_url="/login/")
+def post_answer(request,question_id,answer_id):
+    try:
+        if request.method == "POST":
+            answer = PostAnswer.objects.get(id=answer_id) if answer_id != 0 else None
+            form = (
+                AnswerForm(request.POST, instance=answer)
+                if answer
+                else AnswerForm(request.POST)
+            )
+            print("form", form)
+            if form.is_valid():
+                answer = form.save(commit=False)
+                answer.question_id = question_id
+                answer.author_id = request.user.id
+                answer.save()
+                return redirect(view_question, question_id=question_id)
     except Exception as e:
         manager.create_from_exception(e)
         logging.exception("Something went worng.")

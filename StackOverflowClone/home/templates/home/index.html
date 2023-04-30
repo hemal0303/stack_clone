@@ -6,32 +6,25 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-2 p-4 first_section">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav" id="id_left_menus">
                     <li class="nav-item">
-                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}">Home</a>
+                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}"><i class="fa fa-home"></i>&nbsp;&nbsp;Home</a>
                     </li>
                     <li class="nav-item">
-                        <span class="nav-link nav_link_style">TITLE</span>
-                        <li class="nav-item">
-                            <div class="questions">
-                                <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}"><i class="bi bi-globe-americas"></i>&nbsp;&nbsp;Something</a>
-                            </div>
-                        </li>
-                        <div class="sub_menu_1">
-                            <li class="nav-item ">
-                                <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}">Tag</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}">Users</a>
-                            </li>
-                            <li class="nav-item">
+                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}"><i class="fa fa-globe"></i>&nbsp;&nbsp;Questions</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'tags_list' %}"><i class="fa fa-tags"></i>&nbsp;&nbsp;Tag</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}"><i class="fa fa-user"></i>&nbsp;&nbsp;Users</a>
+                    </li>
+                            <!-- <li class="nav-item">
                                 <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}">Example</a>
-                            </li>
-                        </div>
-                    </li>
-                    <li class="nav-item">
+                            </li> -->
+                    <!-- <li class="nav-item">
                         <span class="nav-link nav_link_style">NEW TITLE</span>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <div class="col-sm-7 p-4 second_section">
