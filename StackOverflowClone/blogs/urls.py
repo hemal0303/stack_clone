@@ -15,4 +15,9 @@ urlpatterns = [
         views.vote_question,
         name="vote_question",
     ),
+    path(
+        "search_tags/",
+        views.search_tags,
+        name="search_tags",
+    ),
 ]

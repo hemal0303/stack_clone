@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from home.views import index
 
 from .forms import QuestionForm
-from .models import Post, Vote
+from .models import Post, Vote, Tags
 
 
 # Create your views here.
@@ -200,6 +200,29 @@ def vote_question(request, question_id):
                 return JsonResponse(
                     {"code": 1, "vote_count": str(vote_count), "voted": voted}
                 )
+        return JsonResponse({"code": 0, "msg": "Something went wrong"})
+    except Exception as e:
+        print("Error", e)
+
+
+def search_tags(request):
+    try:
+        if request.method == "POST":
+            input_tags = request.POST.get("input_tags")
+            response = []
+            if input_tags:
+                tags = Tags.objects.filter(name__icontains=input_tags).values(
+                    "id", "name", "description"
+                )[:6]
+                for tag in tags:
+                    response.append(
+                        {
+                            "id": tag["id"],
+                            "name": tag["name"],
+                            "description": tag["description"],
+                        }
+                    )
+            return JsonResponse({"code": 1, "data": response})
         return JsonResponse({"code": 0, "msg": "Something went wrong"})
     except Exception as e:
         print("Error", e)

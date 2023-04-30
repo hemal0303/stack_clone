@@ -24,8 +24,28 @@
 		<br>
 		<br>
 		<label>Tags*</label>
-		<br><input type="text" placeholder="use , between two tags">
+		<br><input id="search_tag" type="text" placeholder="use , between two tags">
 	</form>
 </div>
+<script>
+	$("#search_tag").on("keyup", function(){
+		var input_tags = $("#search_tag").val();
+		console.log("input_tags", input_tags);
+		var csrfmiddlewaretoken = '{{ csrf_token }}'
+		var postData = {
+			"input_tags": input_tags,
+			"csrfmiddlewaretoken": csrfmiddlewaretoken,
+		}
+		$.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/blogs/search_tags/",
+                data: postData,
+                success: function (data) {
+                    console.log("data", data.data);
+                }
+			})
+	})
+</script>
 
 {% endblock %}
