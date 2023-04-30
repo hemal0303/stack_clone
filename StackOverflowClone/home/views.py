@@ -2,13 +2,14 @@ from django.contrib import messages
 
 # Create your views here.
 from django.contrib.auth import login, logout
-from django.shortcuts import redirect, render
-
+from django.shortcuts import redirect, render, HttpResponse
+import logging
 from blogs.documents import PostDocument
 from blogs.models import Post
 from .backend import EmailAuthBackend
 from .forms import NewUserForm
 from blogs.utils import paginatePost
+from . import manager
 
 
 def index(request):
@@ -49,23 +50,30 @@ def index(request):
             },
         )
     except Exception as e:
-        print("Error", e)
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
 
 
 def authcheck(request):
-    if request.method == "POST":
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        backend = EmailAuthBackend()
-        user = backend.authenticate(request, email=email, password=password)
-        if user:
-            logout(request)
-            login(request, user, backend="home.backend.EmailAuthBackend")
-            messages.success(request, "Logged in Successfully!")
-            return redirect("/")
-        else:
-            messages.error(request, "Invalid credentials!")
-    return render(request, "home/login.html")
+    try:
+        if request.method == "POST":
+            email = request.POST.get("email")
+            password = request.POST.get("password")
+            backend = EmailAuthBackend()
+            user = backend.authenticate(request, email=email, password=password)
+            if user:
+                logout(request)
+                login(request, user, backend="home.backend.EmailAuthBackend")
+                messages.success(request, "Logged in Successfully!")
+                return redirect("/")
+            else:
+                messages.error(request, "Invalid credentials!")
+        return render(request, "home/login.html")
+    except Exception as e:
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
 
 
 def register(request):
@@ -82,7 +90,9 @@ def register(request):
         form = NewUserForm()
         return render(request, "home/register.html", context={"register_form": form})
     except Exception as e:
-        print("Error", e)
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
 
 
 def signout(request):
@@ -93,4 +103,6 @@ def signout(request):
         return redirect("/")
 
     except Exception as e:
-        print("logout error--", e)
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")

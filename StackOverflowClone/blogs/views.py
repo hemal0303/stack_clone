@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Case, F, IntegerField, Sum, When
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
-
+from home import manager
 from home.views import index
-
+import logging
 from .forms import QuestionForm
 from .models import Post, Vote, Tags
 
@@ -13,28 +13,33 @@ from .models import Post, Vote, Tags
 # Create your views here.
 @login_required(login_url="/login/")
 def post_question(request, question_id):
-    post = Post.objects.get(id=question_id) if question_id != 0 else None
-    if post:
-        form = QuestionForm(instance=post)
-    else:
-        form = QuestionForm(request.POST)
-    if request.method == "POST":
-        form = (
-            QuestionForm(request.POST, instance=post)
-            if post
-            else QuestionForm(request.POST)
-        )
-        if form.is_valid():
-            question = form.save(commit=False)
-            question.author_id = request.user.id
-            question.save()
-            return redirect(view_question, question_id=question.id)
+    try:
+        post = Post.objects.get(id=question_id) if question_id != 0 else None
+        if post:
+            form = QuestionForm(instance=post)
+        else:
+            form = QuestionForm(request.POST)
+        if request.method == "POST":
+            form = (
+                QuestionForm(request.POST, instance=post)
+                if post
+                else QuestionForm(request.POST)
+            )
+            if form.is_valid():
+                question = form.save(commit=False)
+                question.author_id = request.user.id
+                question.save()
+                return redirect(view_question, question_id=question.id)
 
-    return render(
-        request,
-        "blogs/post_question.html",
-        context={"form": form, "question_id": question_id if question_id else 0},
-    )
+        return render(
+            request,
+            "blogs/post_question.html",
+            context={"form": form, "question_id": question_id if question_id else 0},
+        )
+    except Exception as e:
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
 
 
 def view_question(request, question_id):
@@ -89,7 +94,9 @@ def view_question(request, question_id):
             },
         )
     except Exception as e:
-        print("Error", e)
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
 
 
 @login_required(login_url="/login/")
@@ -99,7 +106,9 @@ def delete_question(request, question_id):
             Post.objects.filter(id=int(question_id)).update(is_deleted=True)
             return redirect(index)
     except Exception as e:
-        print("Error", e)
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
 
 
 @csrf_exempt
@@ -202,7 +211,9 @@ def vote_question(request, question_id):
                 )
         return JsonResponse({"code": 0, "msg": "Something went wrong"})
     except Exception as e:
-        print("Error", e)
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
 
 
 def search_tags(request):
@@ -225,4 +236,6 @@ def search_tags(request):
             return JsonResponse({"code": 1, "data": response})
         return JsonResponse({"code": 0, "msg": "Something went wrong"})
     except Exception as e:
-        print("Error", e)
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
