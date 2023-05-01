@@ -10,3 +10,7 @@ nginx.default
 docker-compose.yaml
 .vscode
 settings.json
+
+# ignore media files.
+/media/profile_avatars/*
+!/media/profile_avatars/default_user_avatar.png
