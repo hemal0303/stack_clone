@@ -10,6 +10,7 @@ from .forms import QuestionForm, AnswerForm
 from .models import Post, Vote, Tags, PostAnswer
 from blogs.utils import paginatePost
 
+
 # Create your views here.
 @login_required(login_url="/login/")
 def post_question(request, question_id):
@@ -50,7 +51,17 @@ def view_question(request, question_id):
             voted = False
             data = (
                 Post.objects.filter(id=question_id)
-                .values("id", "title", "body", "votes", "author","author__first_name","author__last_name", "created", "updated")
+                .values(
+                    "id",
+                    "title",
+                    "body",
+                    "votes",
+                    "author",
+                    "author__first_name",
+                    "author__last_name",
+                    "created",
+                    "updated",
+                )
                 .first()
             )
             vote_count = (
@@ -85,7 +96,17 @@ def view_question(request, question_id):
                     .values("vote_type")
                     .first()
                 )
-            answer_data = PostAnswer.objects.filter(question_id=question_id).values("id","question","body","author","author__first_name","author__last_name","updated_at","is_accepted","created_at")
+            answer_data = PostAnswer.objects.filter(question_id=question_id).values(
+                "id",
+                "question",
+                "body",
+                "author",
+                "author__first_name",
+                "author__last_name",
+                "updated_at",
+                "is_accepted",
+                "created_at",
+            )
         return render(
             request,
             "blogs/view_question.html",
@@ -93,9 +114,10 @@ def view_question(request, question_id):
                 "data": data,
                 "vote_count": vote_count["total"] if vote_count else 0,
                 "voted": voted["vote_type"] if voted else None,
-                "answer_data":answer_data,
+                "answer_data": answer_data,
                 "total_answer": len(answer_data),
-                "login_user_id":user_id,
+                "login_user_id": user_id,
+                "question_id": question_id,
             },
         )
     except Exception as e:
@@ -245,6 +267,7 @@ def search_tags(request):
         logging.exception("Something went worng.")
         return HttpResponse("Something went wrong")
 
+
 @login_required(login_url="/login/")
 def tags_list(request):
     try:
@@ -266,25 +289,29 @@ def tags_list(request):
         logging.exception("Something went worng.")
         return HttpResponse("Something went wrong")
 
+
 @login_required(login_url="/login/")
-def answer_form(request,question_id,answer_id):
+def answer_form(request, question_id, answer_id):
     try:
         answer = PostAnswer.objects.get(id=answer_id) if answer_id != 0 else None
-        question = Post.objects.filter(id=question_id).values("title", "body","id").first()
+        question = (
+            Post.objects.filter(id=question_id).values("title", "body", "id").first()
+        )
         form = AnswerForm(instance=answer)
         if question_id:
             return render(
                 request,
                 "blogs/post_answer.html",
-                context={"form": form, "question": question,"answer_id":answer_id},
+                context={"form": form, "question": question, "answer_id": answer_id},
             )
     except Exception as e:
         manager.create_from_exception(e)
         logging.exception("Something went worng.")
         return HttpResponse("Something went wrong")
 
+
 @login_required(login_url="/login/")
-def post_answer(request,question_id,answer_id):
+def post_answer(request, question_id, answer_id):
     try:
         if request.method == "POST":
             answer = PostAnswer.objects.get(id=answer_id) if answer_id != 0 else None
@@ -293,13 +320,43 @@ def post_answer(request,question_id,answer_id):
                 if answer
                 else AnswerForm(request.POST)
             )
-            print("form", form)
             if form.is_valid():
                 answer = form.save(commit=False)
                 answer.question_id = question_id
                 answer.author_id = request.user.id
                 answer.save()
                 return redirect(view_question, question_id=question_id)
+    except Exception as e:
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
+
+
+@login_required(login_url="/login/")
+def accept_answer(request):
+    try:
+        if request.method == "POST":
+            question_id = request.POST.get("question_id")
+            answer_id = request.POST.get("answer_id")
+            is_accepted = request.POST.get("is_accepted")
+            old_answer_id = 0
+            if question_id is None or answer_id is None:
+                return JsonResponse({"code": 0, "msg": "Something went wrong"})
+            fields = {"is_accepted": False if is_accepted == "true" else True}
+            print("fields", fields)
+            PostAnswer.objects.filter(question_id=question_id, id=answer_id).update(
+                **fields
+            )
+            old_answer = (
+                PostAnswer.objects.filter(question_id=question_id, is_accepted=True)
+                .exclude(id=answer_id)
+                .first()
+            )
+            if old_answer:
+                old_answer.is_accepted = False
+                old_answer.save()
+                old_answer_id = old_answer.id
+            return JsonResponse({"code": 1, "old_answer_id": old_answer_id})
     except Exception as e:
         manager.create_from_exception(e)
         logging.exception("Something went worng.")

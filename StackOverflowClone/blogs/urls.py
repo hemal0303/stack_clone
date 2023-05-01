@@ -20,7 +20,16 @@ urlpatterns = [
         views.search_tags,
         name="search_tags",
     ),
-    path("tags_list/",views.tags_list,name="tags_list"),
-    path("answer_form/<int:question_id>/<int:answer_id>/",views.answer_form,name="answer_form"),
-    path("post_answer/<int:question_id>/<int:answer_id>/",views.post_answer,name="post_answer"),
+    path("tags_list/", views.tags_list, name="tags_list"),
+    path(
+        "answer_form/<int:question_id>/<int:answer_id>/",
+        views.answer_form,
+        name="answer_form",
+    ),
+    path(
+        "post_answer/<int:question_id>/<int:answer_id>/",
+        views.post_answer,
+        name="post_answer",
+    ),
+    path("accept_answer/", views.accept_answer, name="accept_answer"),
 ]
