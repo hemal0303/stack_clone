@@ -26,6 +26,7 @@ def post_question(request, question_id):
                 if post
                 else QuestionForm(request.POST)
             )
+            print("request.POST", request.POST)
             if form.is_valid():
                 question = form.save(commit=False)
                 question.author_id = request.user.id
@@ -250,14 +251,13 @@ def search_tags(request):
             response = []
             if input_tags:
                 tags = Tags.objects.filter(name__icontains=input_tags).values(
-                    "id", "name", "description"
-                )[:6]
+                    "id", "name"
+                )[:10]
                 for tag in tags:
                     response.append(
                         {
                             "id": tag["id"],
                             "name": tag["name"],
-                            "description": tag["description"],
                         }
                     )
             return JsonResponse({"code": 1, "data": response})

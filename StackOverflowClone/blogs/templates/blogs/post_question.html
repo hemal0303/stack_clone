@@ -35,10 +35,8 @@
 
 		<label>Tags*</label>
 		<br>
-		<div class="autocomplete" style="width: 100%;">
+		<div style="width: 100%;">
 			<input type="text" placeholder="use , between two tags" id="search_tag" class="textinput form-control">   
-		</div>
-		<div id="id_tag_suggestions" class="tag-suggestions js-tag-suggestions box-border" role="listbox" aria-label="Autocomplete suggestions" style="position: absolute;width: 82.5% !important;display: none;">
 		</div>
 		<br>
 		<br>               
@@ -48,55 +46,29 @@
 	</form>
 </div>
 <script>
-	function addsugguesttag(data){
-		html_content= 
-			'<div class="f:bs-ring outline-none js-tag-suggestion" tabindex="0" role="option" style="clear: both;" onclick="selectTag(' + data.id + ')">'+
-			'<div class="d-flex ai-center"><div class="flex--item mr6"><span class="s-tag">'+
-			data.name +
-			'</span></div>'+
-			'<a class="ml-auto flex--item s-btn s-btn__muted p2 js-tag-info-btn" target="_blank" href="/tags/javascript/info" aria-label="info">'+
-			'<svg aria-hidden="true" class="svg-icon iconHelpSm" width="14" height="14" viewBox="0 0 14 14">'+
-			'<path d="M7 1C3.74 1 1 3.77 1 7c0 3.26 2.77 6 6 6 3.27 0 6-2.73 6-6s-2.73-6-6-6Zm1.06 9.06c-.02.63-.48 1.02-1.1 1-.57-.02-1.03-.43-1.01-1.06.02-.63.5-1.04 1.08-1.02.6.02 1.05.45 1.03 1.08Zm.73-3.07-.47.3c-.2.15-.36.36-.44.6a3.6 3.6 0 0 0-.08.65c0 .04-.03.14-.16.14h-1.4c-.14 0-.16-.09-.16-.13-.01-.5.11-.99.36-1.42A4.6 4.6 0 0 1 7.7 6.07c.15-.1.21-.21.3-.33.18-.2.28-.47.28-.74.01-.67-.53-1.14-1.18-1.14-.9 0-1.18.7-1.18 1.46H4.2c0-1.17.31-1.92.98-2.36a3.5 3.5 0 0 1 1.83-.44c.88 0 1.58.16 2.2.62.58.42.88 1.02.88 1.82 0 .5-.17.9-.43 1.24-.15.2-.44.47-.86.79h-.01Z"></path>'+
-			'</svg></a></div>'+
-			'<p class="mt6 mb0 v-truncate4 lh-md">'+
-			data.description+
-			'</p></div>'
-		return html_content
-	}
-    $("#search_tag").on("keyup", function(){
-        var input_tags = $("#search_tag").val();
-        console.log("input_tags", input_tags, input_tags.length);
-		if(input_tags.length == 0){
-			$("#id_tag_suggestions").css("display","none");
-		}
-        var csrfmiddlewaretoken = '{{ csrf_token }}'
-        var postData = {
-            "input_tags": input_tags,
-            "csrfmiddlewaretoken": csrfmiddlewaretoken,
-        }
-        $.ajax({
-			dataType: "json",
-			type: "POST",
-			url: "/blogs/search_tags/",
-			data: postData,
-			success: function (data) {
-				document.getElementById("id_tag_suggestions").innerHTML = ""
-				if(data.data.length == 0){
-					$("#id_tag_suggestions").css("display","none");
-				} else {
-					$("#id_tag_suggestions").css("display","flex");
-					for(i=0;i<data.data.length;i++){
-						append_data = addsugguesttag(data.data[i]);
-						document.getElementById("id_tag_suggestions").innerHTML += append_data
-						console.log("data.data[i]", data.data[i]);
-					}
-				}
+	tag_ms = $("#search_tag").magicSuggest();
+
+    $(tag_ms).on('keyup', function(e, m, v){
+        var input_tags = v.target.value;
+		tag_ms.setData([]);
+		if(input_tags.length > 0){
+			var csrfmiddlewaretoken = '{{ csrf_token }}'
+			var postData = {
+				"input_tags": input_tags,
+				"csrfmiddlewaretoken": csrfmiddlewaretoken,
 			}
-		})
-		function selectTag(id){
-			console.log(id,"id---");
+			$.ajax({
+				dataType: "json",
+				type: "POST",
+				url: "/blogs/search_tags/",
+				data: postData,
+				success: function (data) {
+					console.log("data", data.data);
+					tag_ms.setData(data.data);
+				}
+			})
 		}
-    })
+	})
 </script>
 
 {% endblock %}
