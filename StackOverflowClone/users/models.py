@@ -23,9 +23,15 @@ class Profile(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         # resize the image
+        # img = Image.open(self.avatar.path)
+        # print("img-------------", img.height,"------",img.width)
+        # # if img.height > 300 or img.width > 300:
+        # output_size = (315, 315)
+        # img.thumbnail(output_size) # create a thumbnail
+        # img.save(self.avatar.path) # overwrite the larger image
+        basewidth = 300
         img = Image.open(self.avatar.path)
-        print("img-------------", img.height,"------",img.width)
-        # if img.height > 300 or img.width > 300:
-        output_size = (315, 315)
-        img.thumbnail(output_size) # create a thumbnail
-        img.save(self.avatar.path) # overwrite the larger image
+        wpercent = (basewidth / float(img.size[0]))
+        hsize = int((float(img.size[1]) * float(wpercent)))
+        img = img.resize((basewidth, hsize), Image.ANTIALIAS)
+        img.save(self.avatar.path)

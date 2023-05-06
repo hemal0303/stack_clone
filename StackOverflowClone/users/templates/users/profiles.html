@@ -3,160 +3,105 @@
 {% block content %}
 <style>
 
-.single_advisor_profile {
+a {
+    color: #f96332;
+}
+.m-t-5{
+    margin-top: 5px;   
+}
+.card {
+    background: #ededed;
+    margin-bottom: 30px;
+    transition: .5s;
+    border: 0;
+    border-radius: .1875rem;
+    display: inline-block;
     position: relative;
-    margin-bottom: 50px;
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
-    z-index: 1;
-    border-radius: 15px;
-    -webkit-box-shadow: 0 0.25rem 1rem 0 rgba(47, 91, 234, 0.125);
-    box-shadow: 0 0.25rem 1rem 0 rgba(47, 91, 234, 0.125);
-}
-.single_advisor_profile .advisor_thumb {
-    position: relative;
-    z-index: 1;
-    border-radius: 15px 15px 0 0;
-    margin: 0 auto;
-    padding: 30px 30px 0 30px;
-    background-color: #08548f;
-    overflow: hidden;
-    height: 78%;
-}
-.single_advisor_profile .advisor_thumb::after {
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
-    position: absolute;
-    width: 150%;
-    height: 80px;
-    bottom: -45px;
-    left: -25%;
-    content: "";
-    background-color: #ffffff;
-    -webkit-transform: rotate(-15deg);
-    transform: rotate(-15deg);
-}
-@media only screen and (max-width: 575px) {
-    .single_advisor_profile .advisor_thumb::after {
-        height: 160px;
-        bottom: -90px;
-    }
-}
-.single_advisor_profile .advisor_thumb .social-info {
-    position: absolute;
-    z-index: 1;
     width: 100%;
-    bottom: 0;
-    right: 30px;
-    text-align: right;
+    box-shadow: none;
+    height: 83%;
 }
-.single_advisor_profile .advisor_thumb .social-info a {
+.card .body {
     font-size: 14px;
-    color: #020710;
-    padding: 0 5px;
+    color: #424242;
+    padding: 20px;
+    font-weight: 400;
 }
-.single_advisor_profile .advisor_thumb .social-info a:hover,
-.single_advisor_profile .advisor_thumb .social-info a:focus {
-    color: #3f43fd;
+.profile-page .profile-header {
+    position: relative
 }
-.single_advisor_profile .advisor_thumb .social-info a:last-child {
-    padding-right: 0;
+
+.profile-page .profile-header .profile-image img {
+    border-radius: 50%;
+    width: 110px;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    aspect-ratio: 3/3;
 }
-.single_advisor_profile .single_advisor_details_info {
-    position: relative;
-    z-index: 1;
-    padding: 30px;
-    text-align: right;
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
-    border-radius: 0 0 15px 15px;
-    background-color: #ffffff;
+
+.profile-page .profile-header .social-icon a {
+    margin: 0 5px
 }
-.single_advisor_profile .single_advisor_details_info::after {
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
-    position: absolute;
-    z-index: 1;
-    width: 50px;
-    height: 3px;
-    background-color: #3f43fd;
-    content: "";
-    top: 12px;
-    right: 30px;
+
+.profile-page .profile-sub-header {
+    min-height: 60px;
+    width: 100%
 }
-.single_advisor_profile .single_advisor_details_info h6 {
-    margin-bottom: 0.25rem;
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
+
+.profile-page .profile-sub-header ul.box-list {
+    display: inline-table;
+    table-layout: fixed;
+    width: 100%;
+    background: #eee
 }
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-    .single_advisor_profile .single_advisor_details_info h6 {
-        font-size: 14px;
-    }
+
+.profile-page .profile-sub-header ul.box-list li {
+    border-right: 1px solid #e0e0e0;
+    display: table-cell;
+    list-style: none
 }
-.single_advisor_profile .single_advisor_details_info p {
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
-    margin-bottom: 0;
-    font-size: 14px;
+
+.profile-page .profile-sub-header ul.box-list li:last-child {
+    border-right: none
 }
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-    .single_advisor_profile .single_advisor_details_info p {
-        font-size: 12px;
-    }
-}
-.single_advisor_profile:hover .advisor_thumb::after,
-.single_advisor_profile:focus .advisor_thumb::after {
-    background-color: #ee9107;
-}
-.single_advisor_profile:hover .advisor_thumb .social-info a,
-.single_advisor_profile:focus .advisor_thumb .social-info a {
-    color: #ffffff;
-}
-.single_advisor_profile:hover .advisor_thumb .social-info a:hover,
-.single_advisor_profile:hover .advisor_thumb .social-info a:focus,
-.single_advisor_profile:focus .advisor_thumb .social-info a:hover,
-.single_advisor_profile:focus .advisor_thumb .social-info a:focus {
-    color: #ffffff;
-}
-.single_advisor_profile:hover .single_advisor_details_info,
-.single_advisor_profile:focus .single_advisor_details_info {
-    background-color: #ee9107;
-}
-.single_advisor_profile:hover .single_advisor_details_info::after,
-.single_advisor_profile:focus .single_advisor_details_info::after {
-    background-color: #ffffff;
-}
-.single_advisor_profile:hover .single_advisor_details_info h6,
-.single_advisor_profile:focus .single_advisor_details_info h6 {
-    color: #ffffff;
-}
-.single_advisor_profile:hover .single_advisor_details_info p,
-.single_advisor_profile:focus .single_advisor_details_info p {
-    color: #ffffff;
+
+.profile-page .profile-sub-header ul.box-list li a {
+    display: block;
+    padding: 15px 0;
+    color: #424242
 }
 </style>
 <h3>Profiles</h3>
-<div class="row">
-    {% for usr in data %}
-    <div class="col-12 col-sm-6 col-lg-6">
-        <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s" style="height: 450px;visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
-          <!-- Team Thumb-->
-          {% if usr.avatar != 'profile_avatars/default_user_avatar.png' %}
-          <div class="advisor_thumb"><img style="max-width: 100%;max-height: 100%;display: block;width: 100%;"src="/media/{{usr.avatar}}" alt="">
-          {% else %}
-          <div class="advisor_thumb"><img src="/media/profile_avatars/default_user_avatar_2.png" alt="">
-            {% endif %}
-            <!-- Social Info-->
-            <div class="social-info"><a href="{{usr.website_link}}" target="_blank"><i class="fa fa-globe"></i></a><a href="{{usr.twitter_link}}" target="_blank"><i class="fa fa-twitter"></i></a><a href="{{usr.github_link}}" target="_blank"><i class="fa fa-github"></i></a></div>
-          </div>
-          <!-- Team Details-->
-          <div class="single_advisor_details_info">
-            <h6>{{usr.user__first_name}}&nbsp;{{usr.user__last_name}}</h6>
-            <p class="email">{{usr.user__email}}</p>
-          </div>
+<div class="container profile-page">
+    <div class="row">
+        {% for usr in data %}
+        <div class="col-xl-6 col-lg-6 col-md-6">
+            <div class="card profile-header">
+                <div class="body">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-8">
+                            <div class="profile-image float-md-right"> <img src="/media/{{usr.avatar}}" alt=""> </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-12">
+                            <h5 class="m-t-0 m-b-0"><strong>{{usr.user__first_name}}</strong> {{usr.user__last_name}}</h5>
+                            {% if usr.about_me != none %}
+                            <span class="job_post">{{usr.about_me}}</span>
+                            {% endif %}
+                            {% if usr.location != none %}
+                            <p>{{usr.location}}</p>
+                            {% endif %}
+                            <p class="social-icon m-t-5 m-b-0">
+                                <a title="Twitter" href="{{usr.twitter_link}}" target="_blank"><i class="fa fa-twitter"></i></a>
+                                <a title="Website" href="{{usr.website_link}}" target="_blank"><i class="fa fa-globe"></i></a>
+                                <a title="Github" href="{{usr.github_link}}" target="_blank"><i class="fa fa-github"></i></a>
+                            </p>
+                        </div>                
+                    </div>
+                </div>                    
+            </div>
         </div>
-      </div>
-      {% endfor %}
+        {% endfor %}
+    </div>
 </div>
+        
 {% endblock %}

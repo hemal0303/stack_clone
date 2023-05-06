@@ -7,7 +7,7 @@ from django.http import JsonResponse, HttpResponse
 
 def profile_search(request):
     try:
-        all_users = Profile.objects.filter().values("avatar","user__email","user","user__first_name","user__last_name","user__username","github_link","website_link","twitter_link")
+        all_users = Profile.objects.filter().values("avatar","location","about_me","user__email","user","user__first_name","user__last_name","user__username","github_link","website_link","twitter_link")
         return render(request,"users/profiles.html",context={"data":all_users})
     except Exception as e:
         manager.create_from_exception(e)
