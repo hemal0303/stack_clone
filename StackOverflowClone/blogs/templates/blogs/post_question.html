@@ -36,7 +36,7 @@
 		<label>Tags*</label>
 		<br>
 		<div style="width: 100%;">
-			<input type="text" placeholder="use , between two tags" id="search_tag" class="textinput form-control">   
+			<input type="text" placeholder="use , between two tags" id="search_tag" name="search_tag" class="textinput form-control">   
 		</div>
 		<br>
 		<br>               
@@ -50,7 +50,6 @@
 
     $(tag_ms).on('keyup', function(e, m, v){
         var input_tags = v.target.value;
-		tag_ms.setData([]);
 		if(input_tags.length > 0){
 			var csrfmiddlewaretoken = '{{ csrf_token }}'
 			var postData = {
@@ -63,7 +62,6 @@
 				url: "/blogs/search_tags/",
 				data: postData,
 				success: function (data) {
-					console.log("data", data.data);
 					tag_ms.setData(data.data);
 				}
 			})

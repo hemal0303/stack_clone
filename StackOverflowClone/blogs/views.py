@@ -26,11 +26,13 @@ def post_question(request, question_id):
                 if post
                 else QuestionForm(request.POST)
             )
-            print("request.POST", request.POST)
             if form.is_valid():
+                search_tags = request.POST.getlist("search_tag[]")
                 question = form.save(commit=False)
                 question.author_id = request.user.id
                 question.save()
+                if search_tags:
+                    question.tags.set(search_tags)
                 return redirect(view_question, question_id=question.id)
 
         return render(
@@ -315,6 +317,7 @@ def post_answer(request, question_id, answer_id):
     try:
         if request.method == "POST":
             answer = PostAnswer.objects.get(id=answer_id) if answer_id != 0 else None
+            search_tag = request.POST.get("search_tag")
             form = (
                 AnswerForm(request.POST, instance=answer)
                 if answer
