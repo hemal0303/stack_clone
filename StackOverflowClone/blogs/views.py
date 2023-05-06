@@ -54,19 +54,22 @@ def view_question(request, question_id):
             voted = False
             data = (
                 Post.objects.filter(id=question_id)
-                .values(
-                    "id",
-                    "title",
-                    "body",
-                    "votes",
-                    "author",
-                    "author__first_name",
-                    "author__last_name",
-                    "created",
-                    "updated",
-                )
+                # .values(
+                #     "id",
+                #     "title",
+                #     "body",
+                #     "votes",
+                #     "author",
+                #     "author__first_name",
+                #     "author__last_name",
+                #     "created",
+                #     "updated",
+                #     "tags",
+                #     "tags__name"
+                # )
                 .first()
             )
+            print("data", data)
             vote_count = (
                 Vote.objects.filter(question_id=question_id)
                 .values("question_id")

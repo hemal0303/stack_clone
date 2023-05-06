@@ -1,0 +1,86 @@
+{% extends 'home/index.html' %}
+{% load static %}
+{% block content %}
+<style>
+   
+   @import url('https://fonts.googleapis.com/css?family=Special+Elite');
+.main_div{
+    margin: 100px;
+}
+blockquote {
+	font-weight: 100;
+	font-size: 2rem;
+	max-width: 600px;
+	line-height: 1.4;
+	position: relative;
+	margin: 0;
+	padding: .5rem;
+    font-size: 25px;
+}
+
+blockquote:before,
+blockquote:after {
+	position: absolute;
+	color: #f1efe6;
+	font-size: 8rem;
+	width: 4rem;
+	height: 4rem;
+}
+
+blockquote:before {
+	content: '“';
+	left: -5rem;
+	top: -2rem;
+}
+
+blockquote:after {
+	content: '”';
+	right: -5rem;
+	bottom: 1rem;
+}
+
+cite {
+	line-height: 3;
+	text-align: left;
+    font-size: 20px;
+}
+</style>
+<div class="main_div">
+    <blockquote id="quote" style="	font-family: 'Special Elite', cursive;">The man who comes back through the door in the wall will never be quite the same as the man who went out.</blockquote>
+    <cite id="author" style="font-family: 'Special Elite', cursive;">Aldous Huxley</cite>
+</div>
+<script>
+    let quote = document.getElementById("quote");
+    let author = document.getElementById("author");
+
+    let quotes = [
+        ["Keep Moving Foward", "Eren Yeager"],
+        ["With great powers comes great responsabilities", "Uncle Ben"],
+        ["Every man dies, not every man really lives.", "Braveheart"],
+        ["I’m Commander Shepard, and this is my favorite store on the Citadel!", "Mass Effect 2"],
+        ["War…war never changes", "Fallout"],
+        ["The world fears the inevitable plummet into the abyss. Watch for that moment and when it comes, do not hesitate to leap. It is only when you fall that you learn whether you can fly.", "Dragon Age Origins"],
+        ["Nothing is true, everything is permitted", "Assassin's Creed"],
+        ["Praise the sun!", "Dark Souls"],
+        ["I used to be an adventurer like you until I took an arrow to the knee.", "The Elder Scrolls - Skyrim"],
+        ["Only a mind free of impediments is capable of grasping the chaotic beauty of the world", "Assassin's Creed"]
+    ];
+
+    let randomQuotes = function () {
+        let random = Math.floor(Math.random() * quotes.length);
+        anime({
+            targets: "quote",
+            translateX: 100
+        })
+        quote.innerHTML = quotes[random][0];
+        author.innerHTML = quotes[random][1];
+    };
+
+    randomQuotes();
+
+    setInterval(function(){
+        randomQuotes()
+    }, 5000)
+
+</script>
+{% endblock %}

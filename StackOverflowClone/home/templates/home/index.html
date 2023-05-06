@@ -4,20 +4,20 @@
 
 <section class="main_content">
     <div class="container">
-        <div class="row">
+        <div class="row" style="min-height: calc(100vh - 53px);">
             <div class="col-sm-2 p-4 first_section">
                 <ul class="navbar-nav" id="id_left_menus">
                     <li class="nav-item">
-                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}"><i class="fa fa-home"></i>&nbsp;&nbsp;Home</a>
+                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'home' %}"><i class="fa fa-home"></i>&nbsp;&nbsp;Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}"><i class="fa fa-globe"></i>&nbsp;&nbsp;Questions</a>
+                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;Questions</a>
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link nav_link_style" aria-current="page" href="{% url 'tags_list' %}"><i class="fa fa-tags"></i>&nbsp;&nbsp;Tag</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}"><i class="fa fa-user"></i>&nbsp;&nbsp;Users</a>
+                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'profile_search' %}"><i class="fa fa-user"></i>&nbsp;&nbsp;Users</a>
                     </li>
                             <!-- <li class="nav-item">
                                 <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}">Example</a>
