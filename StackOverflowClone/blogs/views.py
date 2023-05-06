@@ -26,7 +26,6 @@ def post_question(request, question_id):
                 if post
                 else QuestionForm(request.POST)
             )
-            print("request.POST", request.POST)
             if form.is_valid():
                 question = form.save(commit=False)
                 question.author_id = request.user.id
@@ -52,19 +51,22 @@ def view_question(request, question_id):
             voted = False
             data = (
                 Post.objects.filter(id=question_id)
-                .values(
-                    "id",
-                    "title",
-                    "body",
-                    "votes",
-                    "author",
-                    "author__first_name",
-                    "author__last_name",
-                    "created",
-                    "updated",
-                )
+                # .values(
+                #     "id",
+                #     "title",
+                #     "body",
+                #     "votes",
+                #     "author",
+                #     "author__first_name",
+                #     "author__last_name",
+                #     "created",
+                #     "updated",
+                #     "tags",
+                #     "tags__name"
+                # )
                 .first()
             )
+            print("data", data)
             vote_count = (
                 Vote.objects.filter(question_id=question_id)
                 .values("question_id")

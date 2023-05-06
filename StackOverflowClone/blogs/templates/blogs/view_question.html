@@ -8,6 +8,14 @@
     .down_voted{
         color: #dbdbdb;
     }
+    .tags{
+        background-color: #0a95ff7a;
+        padding: 3px;
+        border: 1px solid #0a95ff7a;
+        border-radius: 5px;
+        font-size: 11px;
+        margin-right: 10px;
+    }
 </style>
     <div class="row" style="margin-bottom: 40px;">
         <div style="width: 5%; display:inline">
@@ -16,11 +24,18 @@
         <div style="width: 95%; display:inline;">
             <h4 class="main_title col-sm-9">{{data.title}}</h4>
             <p class="pt-3" style="font-size: 13px;">{{data.body | safe}}</p>
+            {% for tag in data.tags.all %}
+            <span class="tags">
+                {{tag}}
+            </span>
+            {% endfor %}
             <div style="float: right;font-size: 10px;">
                 {% if data.updated %}<span>edited &nbsp; {{data.updated}}</span><br>{% endif %}
                 <span >created &nbsp; {{data.created}}</span><br>
-                <i class="fa fa-user"></i>&nbsp; {{data.author__first_name}}&nbsp;{{data.author__last_name}}
+                <i class="fa fa-user"></i>&nbsp; {{data.author.first_name}}&nbsp;{{data.author.last_name}}
             </div>
+            <br>
+            <br>
             {% if data.author == login_user_id %}
             <a href="{% url 'post_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">edit</a>
             <a href="{% url 'delete_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: brown !important; border-color: brown !important;">delete</a>
@@ -46,6 +61,7 @@
                     {% endif %} 
                     &nbsp; &nbsp; {{data.body | safe}}
                 </p>
+
                 <div style="float: right;font-size: 10px;">
                     <span>edited &nbsp; {{data.updated_at}}</span><br>
                     <span >answered &nbsp; {{data.created_at}}</span><br>

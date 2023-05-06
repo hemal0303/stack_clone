@@ -24,7 +24,8 @@ class Profile(models.Model):
         super().save(*args, **kwargs)
         # resize the image
         img = Image.open(self.avatar.path)
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size) # create a thumbnail
-            img.save(self.avatar.path) # overwrite the larger image
+        print("img-------------", img.height,"------",img.width)
+        # if img.height > 300 or img.width > 300:
+        output_size = (315, 315)
+        img.thumbnail(output_size) # create a thumbnail
+        img.save(self.avatar.path) # overwrite the larger image

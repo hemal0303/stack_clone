@@ -45,6 +45,11 @@ nav {
     border-right: 1px solid silver;
 }
 
+.second_section {
+    border-right: 1px solid silver;
+}
+
+
 footer {
     background-color: var(--theme_background);
     padding-bottom: 50px;
