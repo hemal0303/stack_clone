@@ -24,7 +24,6 @@ def home(request):
 def index(request):
     try:
         pagesize = request.GET.get("pagesize")
-        print("pagesize", pagesize)
         question_search = request.GET.get("question_search")
         search_fields = {}
         questions = []
