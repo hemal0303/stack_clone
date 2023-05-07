@@ -46,8 +46,11 @@
 	</form>
 </div>
 <script>
-	tag_ms = $("#search_tag").magicSuggest();
-
+	var tag_response = {{ tags|safe }},
+	tag_ms = $("#search_tag").magicSuggest({
+		allowFreeEntries: false,
+	});
+	tag_ms.setSelection(tag_response)
     $(tag_ms).on('keyup', function(e, m, v){
         var input_tags = v.target.value;
 		if(input_tags.length > 0){

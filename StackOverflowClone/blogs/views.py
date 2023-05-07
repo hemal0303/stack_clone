@@ -16,8 +16,14 @@ from blogs.utils import paginatePost
 def post_question(request, question_id):
     try:
         post = Post.objects.get(id=question_id) if question_id != 0 else None
+        tag_response = []
+        search_tags = []
         if post:
             form = QuestionForm(instance=post)
+            tags = post.tags.all().values("id", "name")
+            if tags:
+                for tag in tags:
+                    tag_response.append({"id": tag["id"], "name": tag["name"]})
         else:
             form = QuestionForm(request.POST)
         if request.method == "POST":
@@ -31,14 +37,17 @@ def post_question(request, question_id):
                 question = form.save(commit=False)
                 question.author_id = request.user.id
                 question.save()
-                if search_tags:
-                    question.tags.set(search_tags)
+                question.tags.set(search_tags)
                 return redirect(view_question, question_id=question.id)
 
         return render(
             request,
             "blogs/post_question.html",
-            context={"form": form, "question_id": question_id if question_id else 0},
+            context={
+                "form": form,
+                "question_id": question_id if question_id else 0,
+                "tags": tag_response,
+            },
         )
     except Exception as e:
         manager.create_from_exception(e)
@@ -52,24 +61,7 @@ def view_question(request, question_id):
         if question_id:
             vote_count = None
             voted = False
-            data = (
-                Post.objects.filter(id=question_id)
-                # .values(
-                #     "id",
-                #     "title",
-                #     "body",
-                #     "votes",
-                #     "author",
-                #     "author__first_name",
-                #     "author__last_name",
-                #     "created",
-                #     "updated",
-                #     "tags",
-                #     "tags__name"
-                # )
-                .first()
-            )
-            print("data", data)
+            data = Post.objects.filter(id=question_id).first()
             vote_count = (
                 Vote.objects.filter(question_id=question_id)
                 .values("question_id")

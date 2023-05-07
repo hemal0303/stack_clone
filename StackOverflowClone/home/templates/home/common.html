@@ -19,6 +19,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/magicsuggest/2.1.5/magicsuggest-min.js" integrity="sha512-0qwHzv41cwsUdBjAxZb4g2U26gD3I0nbfwsM9loIDabYtspTH5XOaKpmOv/M9GQG3CCWjQvv4biWWZK7tcnDJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="{% static 'home/css/common.css' %}">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
     <style>
         * {
         font-family: sans-serif;
@@ -64,8 +66,10 @@
             </div>
         </nav>
     </header>
+    <center>
+        <div class="alert-error" id="msg"></div>
+    </center>
     <center class="message_center">
-        <div class="alert-error" style="display:none; text-align: center;margin-top: 20px;" id="msg"></div>
         {% for message in messages %}
             {% if message.tags == 'success' %}
             <div class="success-msg">

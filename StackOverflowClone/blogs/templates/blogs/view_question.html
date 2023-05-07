@@ -36,13 +36,11 @@
             </div>
             <br>
             <br>
-            {% if data.author == login_user_id %}
-            <a href="{% url 'post_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">edit</a>
+            {% if data.author.id == login_user_id %}
+            <a href="{% url 'post_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important;">edit</a>
             <a href="{% url 'delete_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: brown !important; border-color: brown !important;">delete</a>
             {% endif %}
-            {% if data.author != login_user_id %}
             <a href="{% url 'answer_form' data.id 0 %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: #0a95ff !important; border-color: #0a95ff !important;">Post your answer</a>
-            {% endif %}
         </div>
 
     </div>
@@ -68,10 +66,7 @@
                     <i class="fa fa-user"></i>&nbsp; {{data.author__first_name}}&nbsp;{{data.author__last_name}}
                 </div>
 
-                <!-- <div style="float: right;">
-                    <i class="fa fa-user">{{data.author__first_name}} &nbsp; {{data.author__last_name}}</i>
-                </div> -->
-                {% if data.author == login_user_id %}
+                {% if data.author.id == login_user_id %}
                     <a href="{% url 'answer_form' data.question data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">Edit answer</a>
                 {% endif %}
             </div>
@@ -130,8 +125,6 @@
         }
 
         function AcceptAnswer(answer_id, is_accepted){
-            console.log("answer_id", answer_id);
-            console.log("is_accepted", is_accepted);
             var question_id = '{{ question_id }}';
             var postData = {
                 "question_id" : question_id,

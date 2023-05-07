@@ -11,16 +11,16 @@ from .forms import NewUserForm
 from blogs.utils import paginatePost
 from . import manager
 
+
 def home(request):
     try:
-        return render(
-            request,
-            "home/home.html"
-        )
+        return render(request, "home/home.html")
     except Exception as e:
         manager.create_from_exception(e)
         logging.exception("Something went worng.")
         return HttpResponse("Something went wrong")
+
+
 def index(request):
     try:
         pagesize = request.GET.get("pagesize")
@@ -43,7 +43,7 @@ def index(request):
             search_fields["is_deleted"] = False
             questions = (
                 Post.objects.filter(**search_fields)
-                .values("title", "tags__name", "id", "body")
+                .values("title", "tags__name", "id", "body", "author_id", "status")
                 .order_by("id")
                 .distinct("id")
             )

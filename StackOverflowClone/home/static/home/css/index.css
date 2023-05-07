@@ -149,7 +149,13 @@ footer {
     z-index: 1;
     position: absolute
 }
-
+#msg{
+    display:none; 
+    text-align: center !important;
+    margin-top: 20px !important;
+    position:absolute !important;
+    margin-left: 37% !important;
+}
 .info-msg,
 .success-msg,
 .warning-msg,
