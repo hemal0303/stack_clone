@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
-
+# from django_resized import ResizedImageField
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -16,6 +16,7 @@ class Profile(models.Model):
         default='profile_avatars/default_user_avatar.png', # default avatar
         upload_to='profile_avatars'
     )
+    # new_avatar= ResizedImageField(size=[315, 315], crop=['top', 'left'], upload_to='profile_avatars',default='profile_avatars/default_user_avatar.png')
 
     def __str__(self):
         return f'{self.user.username} Profile'
@@ -29,7 +30,7 @@ class Profile(models.Model):
         # output_size = (315, 315)
         # img.thumbnail(output_size) # create a thumbnail
         # img.save(self.avatar.path) # overwrite the larger image
-        basewidth = 300
+        basewidth = 315
         img = Image.open(self.avatar.path)
         wpercent = (basewidth / float(img.size[0]))
         hsize = int((float(img.size[1]) * float(wpercent)))

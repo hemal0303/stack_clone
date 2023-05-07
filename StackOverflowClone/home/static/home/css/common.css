@@ -44,3 +44,8 @@ box-sizing: border-box !important;
     padding-right: 5px;
     color: hsl(205,47%,42%);
 }
+.edit_pro{
+    color: white;
+    text-transform: capitalize;
+    text-decoration: none;
+}

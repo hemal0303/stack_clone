@@ -1,0 +1,135 @@
+{% extends 'home/common.html' %}
+{% load static %}
+{% block body_content %}
+<style>
+    body {
+        background: rgb(7 81 143);
+    }
+    .navbar {
+        box-shadow: none !important;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #BA68C8
+    }
+
+    .profile-button {
+        background: rgb(7 81 143);
+        box-shadow: none;
+        border: none
+    }
+
+    .profile-button:hover {
+        background: #042255
+    }
+
+    .profile-button:focus {
+        background: #042255;
+        box-shadow: none
+    }
+
+    .profile-button:active {
+        background: #042255;
+        box-shadow: none
+    }
+
+    .back:hover {
+        color: #042255;
+        cursor: pointer
+    }
+
+    .labels {
+        font-size: 11px
+    }
+
+    .add-experience:hover {
+        background: #07518f;
+        color: #fff;
+        cursor: pointer;
+        border: solid 1px #07518f
+    }
+    input[type=file]::file-selector-button {
+    margin-right: 20px;
+    border: none;
+    background: rgb(7 81 143);
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: background .2s ease-in-out;
+    line-height: normal;
+    }
+
+    input[type=file]::file-selector-button:hover {
+    background: #042255;
+    }
+    .input_full{
+        margin-bottom:  1rem!important;
+    }
+
+</style>
+<section class="main_content">
+  <div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" height="150px" src="/media/{{data.avatar}}"><span class="font-weight-bold">{{data.user__first_name}}&nbsp;{{data.user__last_name}}</span><span class="text-black-50">{{data.user__email}}</span><span> </span><br></div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <form action="/users/save_profile/{{data.user_id}}/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row mt-2">
+                        <div class="col-md-6"><input type="text" name="first_name" class="form-control" placeholder="first name" value="{{data.user__first_name}}"></div>
+                        <div class="col-md-6"><input type="text" name="last_name" class="form-control" value="{{data.user__last_name}}" placeholder="last name"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12 input_full"><input type="text" name="username" class="form-control" placeholder="username" value="{{data.user__username}}"></div>
+                        <div class="col-md-12 input_full"><input type="email" name="email" class="form-control" placeholder="enter email id" value="{{data.user__email}}"></div>
+                        <div class="col-md-12 input_full"><input type="text" name="about_me" class="form-control" placeholder="your role (about me.)" value="{{data.about_me}}"></div>
+                        <div class="col-md-12 input_full"><input type="text" name="location" class="form-control" placeholder="location" value="{{data.location}}"></div>
+                        <div class="col-md-12 input_full"><input type="text" name="website_like" class="form-control" placeholder="website link" value="{{data.website_link}}"></div>
+                        <div class="col-md-12 input_full"><input type="text" name="twitter_link" class="form-control" placeholder="twitter link" value="{{data.twitter_link}}"></div>
+                        <div class="col-md-12 input_full"><input type="text" name="github_link" class="form-control" placeholder="github link" value="{{data.github_link}}"></div>
+                    </div>
+                    <label class="file">
+                        <span class="file-custom btn btn-primary profile-button" for="file" >Choose Profile Image</span>
+                        <span id="show_file_name" style="margin-left: 10px;"></span>
+                        <input type="file" name="profile_img" id="file" style="visibility: hidden;" accept="image/*" aria-label="File browser example">
+                      </label>
+                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center experience">
+                    <span class="btn btn-primary profile-button">Reset Password</span>
+                    <a class="btn btn-primary profile-button" href="{% url 'index' %}" type="button">Back</a>
+                </div>
+                <br>
+                <div class="reset_password" style="display: none;">
+                    <span>Password</span><br><br>
+                    <div class="col-md-12"><input type="text" class="form-control" placeholder="new password" value=""></div> <br>
+                    <div class="col-md-12"><input type="text" class="form-control" placeholder="re type new password" value=""></div>
+                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Password</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</section>
+<script>
+    $("#file").change(function() {
+        filename = this.files[0].name;
+        $("#show_file_name").text(filename);
+        console.log("filename", filename);
+    });
+</script>
+{% endblock %}
