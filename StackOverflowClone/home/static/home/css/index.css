@@ -47,6 +47,7 @@ nav {
 
 .second_section {
     border-right: 1px solid silver;
+    min-height: calc(100vh - 53px);
 }
 
 
