@@ -4,12 +4,14 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render, HttpResponse
 import logging
-from blogs.documents import PostDocument
+
+# from blogs.documents import PostDocument
 from blogs.models import Post
 from .backend import EmailAuthBackend
 from .forms import NewUserForm
 from blogs.utils import paginatePost
 from . import manager
+from .elastic_connection import es
 
 
 def home(request):
@@ -27,18 +29,18 @@ def index(request):
         question_search = request.GET.get("question_search")
         search_fields = {}
         questions = []
-        if question_search:
-            elastic_data = PostDocument.search().query("match", title=question_search)
-            for post in elastic_data:
-                questions.append(
-                    {
-                        "id": post.id,
-                        "title": post.title,
-                    }
-                )
-            search_fields = {
-                "title__icontains": question_search,
-            }
+        # if question_search:
+        #     elastic_data = PostDocument.search().query("match", title=question_search)
+        #     for post in elastic_data:
+        #         questions.append(
+        #             {
+        #                 "id": post.id,
+        #                 "title": post.title,
+        #             }
+        #         )
+        #     search_fields = {
+        #         "title__icontains": question_search,
+        #     }
         if len(questions) == 0:
             search_fields["is_deleted"] = False
             questions = (

@@ -2,6 +2,10 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from ckeditor.fields import RichTextField
+from home.elastic_connection import ElasticSearch
+from elasticsearch import Elasticsearch
+
+es = Elasticsearch()
 
 
 def validate_entry(value):
@@ -34,6 +38,47 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        # Elasticsearch
+        index_available = False
+        while not index_available:
+            if es.indices.exists(index="posts"):
+                index_available = True
+                body = {
+                    "id": self.id,
+                    "title": self.title,
+                    "author_id": self.author.id,
+                    "author_name": self.author.first_name + " " + self.author.last_name,
+                    "body": self.body,
+                }
+                instance_bool = es.exists(index="posts", id=self.id)
+                if instance_bool:
+                    instance = es.get(index="posts", id=self.id)
+                    instance["_source"]["title"] = self.title
+                    instance["_source"]["body"] = self.body
+                    source_to_update = {
+                        "doc": {
+                            "title": self.title,
+                            "body": self.body,
+                        }
+                    }
+                    es.update(index="posts", id=self.id, body=source_to_update)
+                else:
+                    es.index(index="posts", body=body, id=self.id)
+            else:
+                mapping = {
+                    "id": {"type": "integer"},
+                    "title": {"type": "text"},
+                    "author_id": {"type": "integer"},
+                    "author_name": {"type": "text"},
+                    "body": {"type": "text"},
+                }
+                es.indices.create(
+                    index="posts", body={"mappings": {"properties": mapping}}
+                )
 
 
 class Tags(models.Model):
