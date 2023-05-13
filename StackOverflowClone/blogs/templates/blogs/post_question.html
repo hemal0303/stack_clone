@@ -30,7 +30,11 @@
 <div class="container py-5">
 	<div class="row" style="justify-content: space-between;">
         <h4 class="main_title col-sm-10" style="width: auto;">Ask a Question:</h4>
+		{% if question_id == 0 %}
         <a href="{% url 'index' %}" class="btn btn-primary center" style="width:auto;">Back</a>
+		{% else %}
+		<a href="{% url 'view_question' question_id %}" class="btn btn-primary center" style="width:auto;">Back</a>
+		{% endif %}
     </div>
     
     <form method="POST" action="{% url 'post_question' question_id %}">

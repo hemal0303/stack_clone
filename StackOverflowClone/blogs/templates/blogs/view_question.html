@@ -62,7 +62,7 @@
                             {% if data_ans.is_accepted %} 
                             <i class="fa fa-check fa-2x" id="answer_{{ data_ans.id }}" style="color: green; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data_ans.id }}', true)"></i>
                             {% else %}
-                            <i class="fa fa-check fa-2x" id="answer_{{ data_ans.id }}" style="color: grey; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data_ans.id }}', false)"></i>
+                            <i class="fa fa-check fa-2x" id="answer_{{ data_ans.id }}" style="color: #5555; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data_ans.id }}', false)"></i>
                             {% endif %} 
                         {% endif %}
                         &nbsp; &nbsp; {{data_ans.body | safe}}
@@ -159,12 +159,12 @@
                 success: function (data) {
                     console.log("data", data);
                     if (data.code == 1 && is_accepted == true && data.old_answer_id == 0){
-                        $("#answer_" + answer_id).css('color', 'grey')
+                        $("#answer_" + answer_id).css('color', '#5555')
                         $("#answer_" + answer_id).attr("onclick","AcceptAnswer(" + answer_id +", false)");
                     }
                     if (data.code == 1 && is_accepted == false){
                         $("#answer_" + answer_id).css('color', 'green')
-                        $("#answer_" + data.old_answer_id).css('color', 'grey')
+                        $("#answer_" + data.old_answer_id).css('color', '#5555')
                         $("#answer_" + answer_id).attr("onclick","AcceptAnswer(" + answer_id +", true)");
                         $("#answer_" + data.old_answer_id).attr("onclick","AcceptAnswer(" + answer_id +", false)");
                     }
