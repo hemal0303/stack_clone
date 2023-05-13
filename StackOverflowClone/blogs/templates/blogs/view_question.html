@@ -50,28 +50,31 @@
     </div>
     <div class="row">
         <h6>{{total_answer}} &nbsp; Answer</h6>
-        {% for data in answer_data %}
+        {% for data_ans in answer_data %}
         <div style="width: 95%; display:inline;border-bottom: 1px solid #c0c0c0;padding-bottom: 10px;">
             
             <div style="margin-left: 25px;">
                 <!-- <h4 class="main_title col-sm-9">{{data}}</h4> -->
-                <p class="pt-3" style="font-size: 13px;">
-                    {% if data.is_accepted %} 
-                    <i class="fa fa-check fa-2x" id="answer_{{ data.id }}" style="color: green; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data.id }}', true)"></i>
-                    {% else %}
-                    <i class="fa fa-check fa-2x" id="answer_{{ data.id }}" style="color: grey; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data.id }}', false)"></i>
-                    {% endif %} 
-                    &nbsp; &nbsp; {{data.body | safe}}
-                </p>
+                
+                    <p class="pt-3" style="font-size: 13px;">
+                        {% if data.author.id == login_user_id %}
+                            {% if data_ans.is_accepted %} 
+                            <i class="fa fa-check fa-2x" id="answer_{{ data_ans.id }}" style="color: green; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data_ans.id }}', true)"></i>
+                            {% else %}
+                            <i class="fa fa-check fa-2x" id="answer_{{ data_ans.id }}" style="color: grey; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data_ans.id }}', false)"></i>
+                            {% endif %} 
+                        {% endif %}
+                        &nbsp; &nbsp; {{data_ans.body | safe}}
+                    </p>
+                
 
                 <div style="float: right;font-size: 10px;">
-                    <span>edited &nbsp; {{data.updated_at}}</span><br>
-                    <span >answered &nbsp; {{data.created_at}}</span><br>
-                    <i class="fa fa-user"></i>&nbsp; {{data.author__first_name}}&nbsp;{{data.author__last_name}}
+                    <span>edited &nbsp; {{data_ans.updated_at}}</span><br>
+                    <span >answered &nbsp; {{data_ans.created_at}}</span><br>
+                    <i class="fa fa-user"></i>&nbsp; {{data_ans.author__first_name}}&nbsp;{{data_ans.author__last_name}}
                 </div>
-
-                {% if data.author.id == login_user_id %}
-                    <a href="{% url 'answer_form' data.question data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">Edit answer</a>
+                {% if data_ans.author == login_user_id %}
+                    <a href="{% url 'answer_form' data_ans.question data_ans.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">Edit answer</a>
                 {% endif %}
             </div>
         </div>

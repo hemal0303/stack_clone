@@ -343,8 +343,8 @@ def accept_answer(request):
             old_answer_id = 0
             if question_id is None or answer_id is None:
                 return JsonResponse({"code": 0, "msg": "Something went wrong"})
+
             fields = {"is_accepted": False if is_accepted == "true" else True}
-            print("fields", fields)
             PostAnswer.objects.filter(question_id=question_id, id=answer_id).update(
                 **fields
             )
