@@ -5,75 +5,75 @@
 <section class="main_content">
     <div class="container">
         <div class="row" style="min-height: calc(100vh - 53px);">
-            <div class="col-sm-2 p-4 first_section">
-                <ul class="navbar-nav" id="id_left_menus">
-                    <li class="nav-item">
-                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'home' %}"><i class="fa fa-home"></i>&nbsp;&nbsp;Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;Questions</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'tags_list' %}"><i class="fa fa-tags"></i>&nbsp;&nbsp;Tag</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav_link_style" aria-current="page" href="{% url 'profile_search' %}"><i class="fa fa-user"></i>&nbsp;&nbsp;Users</a>
-                    </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}">Example</a>
-                            </li> -->
-                    <!-- <li class="nav-item">
-                        <span class="nav-link nav_link_style">NEW TITLE</span>
-                    </li> -->
-                </ul>
-            </div>
-            <div class="col-sm-7 p-4 second_section">
-                {% block content %}
+                <div class="col-sm-2 p-4 first_section">
+                    <ul class="navbar-nav" id="id_left_menus">
+                        <li class="nav-item left_menus">
+                            <a class="nav-link nav_link_style" aria-current="page" href="{% url 'home' %}"><i class="fa fa-home"></i>&nbsp;&nbsp;Home</a>
+                        </li>
+                        <li class="nav-item left_menus">
+                            <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;Questions</a>
+                        </li>
+                        <li class="nav-item left_menus">
+                            <a class="nav-link nav_link_style" aria-current="page" href="{% url 'tags_list' %}"><i class="fa fa-tags"></i>&nbsp;&nbsp;Tag</a>
+                        </li>
+                        <li class="nav-item left_menus">
+                            <a class="nav-link nav_link_style" aria-current="page" href="{% url 'profile_search' %}"><i class="fa fa-user"></i>&nbsp;&nbsp;Users</a>
+                        </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link nav_link_style" aria-current="page" href="{% url 'index' %}">Example</a>
+                                </li> -->
+                        <!-- <li class="nav-item">
+                            <span class="nav-link nav_link_style">NEW TITLE</span>
+                        </li> -->
+                    </ul>
+                </div>
+                <div class="col-sm-7 p-4 second_section">
+                    {% block content %}
 
-                {% endblock %}
-            </div>
-            <div class="col-sm-3 p-4 third_section">
-                <div class="row third_section_details third_sec_border">
-                    <div class="col-sm-12 p-2 third_section_title third_sec_border2"><span>New Blog</span></div>
-                    <div class="col-sm-12 pt-2">
-                        <div class="row">
-                            <div class="col-sm-1 third_sec_desc"><i class="bi bi-pencil-fill"></i></div>
-                            <div class="col-sm-10 third_sec_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero, sequi?</div>
+                    {% endblock %}
+                </div>
+                <div class="col-sm-3 p-4 third_section">
+                    <div class="row third_section_details third_sec_border">
+                        <div class="col-sm-12 p-2 third_section_title third_sec_border2"><span>New Blog</span></div>
+                        <div class="col-sm-12 pt-2">
+                            <div class="row">
+                                <div class="col-sm-1 third_sec_desc"><i class="bi bi-pencil-fill"></i></div>
+                                <div class="col-sm-10 third_sec_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero, sequi?</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12 pt-2 pb-2 third_sec_border2">
-                        <div class="row">
-                            <div class="col-sm-1 third_sec_desc "><i class="bi bi-pencil-fill"></i></div>
-                            <div class="col-sm-10 third_sec_desc"><span>Lorem ipsum dolor sit amet.</span></div>
+                        <div class="col-sm-12 pt-2 pb-2 third_sec_border2">
+                            <div class="row">
+                                <div class="col-sm-1 third_sec_desc "><i class="bi bi-pencil-fill"></i></div>
+                                <div class="col-sm-10 third_sec_desc"><span>Lorem ipsum dolor sit amet.</span></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12 p-2 third_section_title third_sec_border2"><span>Featured Topics</span></div>
-                    <div class="col-sm-12 pt-2">
-                        <div class="row">
-                            <div class="col-sm-1 third_sec_desc "><i class="bi bi-chat-right text-primary"></i></div>
-                            <div class="col-sm-10 third_sec_desc"><span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span></div>
+                        <div class="col-sm-12 p-2 third_section_title third_sec_border2"><span>Featured Topics</span></div>
+                        <div class="col-sm-12 pt-2">
+                            <div class="row">
+                                <div class="col-sm-1 third_sec_desc "><i class="bi bi-chat-right text-primary"></i></div>
+                                <div class="col-sm-10 third_sec_desc"><span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12 pt-2">
-                        <div class="row">
-                            <div class="col-sm-1 third_sec_desc "><i class="bi bi-stack-overflow"></i></div>
-                            <div class="col-sm-10 third_sec_desc"><span>Lorem ipsum dolor sit amet.</span></div>
+                        <div class="col-sm-12 pt-2">
+                            <div class="row">
+                                <div class="col-sm-1 third_sec_desc "><i class="bi bi-stack-overflow"></i></div>
+                                <div class="col-sm-10 third_sec_desc"><span>Lorem ipsum dolor sit amet.</span></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12 pt-2">
-                        <div class="row">
-                            <div class="col-sm-1 third_sec_desc "><i class="bi bi-stack-overflow"></i></div>
-                            <div class="col-sm-10 third_sec_desc"><span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span></div>
+                        <div class="col-sm-12 pt-2">
+                            <div class="row">
+                                <div class="col-sm-1 third_sec_desc "><i class="bi bi-stack-overflow"></i></div>
+                                <div class="col-sm-10 third_sec_desc"><span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12 pt-2 pb-2">
-                        <div class="row">
-                            <div class="col-sm-1 third_sec_desc "><i class="bi bi-stack-overflow"></i></div>
-                            <div class="col-sm-10 third_sec_desc"><span>Lorem, ipsum dolor.</span></div>
+                        <div class="col-sm-12 pt-2 pb-2">
+                            <div class="row">
+                                <div class="col-sm-1 third_sec_desc "><i class="bi bi-stack-overflow"></i></div>
+                                <div class="col-sm-10 third_sec_desc"><span>Lorem, ipsum dolor.</span></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </section>

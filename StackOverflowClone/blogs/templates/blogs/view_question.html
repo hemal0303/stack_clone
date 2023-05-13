@@ -23,7 +23,7 @@
 </style>
     <div class="row" style="margin-bottom: 40px;">
         <div style="width: 5%; display:inline">
-            <i id="up_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-up {% if voted == 'up' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event,'{{ data.id }}', 'up')"></i><p id="vote_count">{{ vote_count }}</p><i id="down_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-down {% if voted == 'down' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event, '{{ data.id }}', 'down')"></i>
+            <i id="up_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-up {% if voted == 'up' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event,'{{ data.id }}', 'up')"></i><span id="vote_count">{{ vote_count }}</span><i id="down_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-down {% if voted == 'down' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event, '{{ data.id }}', 'down')"></i>
         </div>
         <div style="width: 95%; display:inline;">
             <h4 class="main_title col-sm-9">{{data.title}}</h4>

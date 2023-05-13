@@ -28,7 +28,11 @@
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 <div class="container py-5">
-    <h1>Ask a Question:</h1>
+	<div class="row" style="justify-content: space-between;">
+        <h4 class="main_title col-sm-10" style="width: auto;">Ask a Question:</h4>
+        <a href="{% url 'index' %}" class="btn btn-primary center" style="width:auto;">Back</a>
+    </div>
+    
     <form method="POST" action="{% url 'post_question' question_id %}">
 		{% csrf_token %}
 		{{ form|crispy }}  

@@ -45,10 +45,31 @@ box-sizing: border-box !important;
     color: hsl(205,47%,42%);
 }
 .edit_pro{
-    color: white;
+    color: #07518f;
     text-transform: capitalize;
     text-decoration: none;
 }
 p{
     line-break: anywhere;
+}
+
+
+.logout_btn{
+    text-decoration: none;
+    margin-left: 5px;
+    padding-left: 10px;
+    border: none;
+    background: transparent;
+    color: #07518f;
+    text-decoration-line: underline;
+    font-weight: bold;
+    font-size: small;
+}
+
+.logout_btn:hover,.edit_pro:hover{
+    color: white;
+}
+
+.main_content_custom{
+    min-height: calc(100vh - 53px);
 }
