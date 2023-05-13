@@ -247,6 +247,7 @@ def search_tags(request):
             input_tags = request.POST.get("input_tags")
             response = []
             if input_tags:
+                input_tags = input_tags.lower().strip()
                 tags = Tags.objects.filter(name__icontains=input_tags).values(
                     "id", "name"
                 )[:10]

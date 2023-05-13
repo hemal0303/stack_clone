@@ -12,6 +12,10 @@ from .forms import NewUserForm
 from blogs.utils import paginatePost
 from . import manager
 from .elastic_connection import es
+from elasticsearch import Elasticsearch
+from django.db.models import Q
+
+es = Elasticsearch()
 
 
 def home(request):
@@ -26,25 +30,55 @@ def home(request):
 def index(request):
     try:
         pagesize = request.GET.get("pagesize")
-        question_search = request.GET.get("question_search")
-        search_fields = {}
+        question_search = (
+            request.GET.get("question_search")
+            if request.GET.get("question_search") is not None
+            else ""
+        )
         questions = []
-        # if question_search:
-        #     elastic_data = PostDocument.search().query("match", title=question_search)
-        #     for post in elastic_data:
-        #         questions.append(
-        #             {
-        #                 "id": post.id,
-        #                 "title": post.title,
-        #             }
-        #         )
-        #     search_fields = {
-        #         "title__icontains": question_search,
-        #     }
+        if question_search:
+            query = {
+                "query": {
+                    "bool": {
+                        "should": [
+                            {
+                                "wildcard": {
+                                    "title": {
+                                        "value": "*" + question_search + "*",
+                                        "case_insensitive": True,
+                                    }
+                                }
+                            },
+                            {
+                                "wildcard": {
+                                    "body": {
+                                        "value": "*" + question_search + "*",
+                                        "case_insensitive": True,
+                                    }
+                                }
+                            },
+                        ]
+                    }
+                }
+            }
+
+            elastic_data = es.search(index="posts", body=query)
+            for post in elastic_data["hits"]["hits"]:
+                questions.append(
+                    {
+                        "id": post["_source"]["id"],
+                        "title": post["_source"]["title"],
+                        "body": post["_source"]["body"],
+                    }
+                )
+
         if len(questions) == 0:
-            search_fields["is_deleted"] = False
             questions = (
-                Post.objects.filter(**search_fields)
+                Post.objects.filter(
+                    Q(title__icontains=question_search)
+                    | Q(body__icontains=question_search),
+                    is_deleted=False,
+                )
                 .values("title", "tags__name", "id", "body", "author_id", "status")
                 .order_by("id")
                 .distinct("id")
