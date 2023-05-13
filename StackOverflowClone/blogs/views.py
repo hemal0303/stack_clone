@@ -105,8 +105,10 @@ def view_question(request, question_id):
                 "is_accepted",
                 "created_at",
             )
-        return render(
-            request,
+
+            ans_form = AnswerForm(instance=None)
+
+        return render(request,
             "blogs/view_question.html",
             context={
                 "data": data,
@@ -116,6 +118,7 @@ def view_question(request, question_id):
                 "total_answer": len(answer_data),
                 "login_user_id": user_id,
                 "question_id": question_id,
+                "form":ans_form,
             },
         )
     except Exception as e:
@@ -341,8 +344,8 @@ def accept_answer(request):
             old_answer_id = 0
             if question_id is None or answer_id is None:
                 return JsonResponse({"code": 0, "msg": "Something went wrong"})
+
             fields = {"is_accepted": False if is_accepted == "true" else True}
-            print("fields", fields)
             PostAnswer.objects.filter(question_id=question_id, id=answer_id).update(
                 **fields
             )

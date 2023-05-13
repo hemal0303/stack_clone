@@ -1,6 +1,7 @@
 {% extends 'home/index.html' %}
 {% load static %}
 {% block content %}
+{% load crispy_forms_tags %}
 <style>
     .up_voted{
         color: black;
@@ -9,17 +10,21 @@
         color: #dbdbdb;
     }
     .tags{
-        background-color: #0a95ff7a;
-        padding: 3px;
-        border: 1px solid #0a95ff7a;
+        background-color: #07518f20;
+        padding: 5px;
+        border: 2px  #07518f20;
         border-radius: 5px;
         font-size: 11px;
         margin-right: 10px;
+        color: #07518f;
     }
+    #cke_id_body{
+		width: auto !important;
+	}
 </style>
     <div class="row" style="margin-bottom: 40px;">
         <div style="width: 5%; display:inline">
-            <i id="up_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-up {% if voted == 'up' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event,'{{ data.id }}', 'up')"></i><p id="vote_count">{{ vote_count }}</p><i id="down_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-down {% if voted == 'down' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event, '{{ data.id }}', 'down')"></i>
+            <i id="up_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-up {% if voted == 'up' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event,'{{ data.id }}', 'up')"></i><span id="vote_count">{{ vote_count }}</span><i id="down_vote_icon" style="cursor: pointer;" class="fas fa-long-arrow-alt-down {% if voted == 'down' %}up_voted{% else %}down_voted{% endif %}" onclick="VotePost(event, '{{ data.id }}', 'down')"></i>
         </div>
         <div style="width: 95%; display:inline;">
             <h4 class="main_title col-sm-9">{{data.title}}</h4>
@@ -40,39 +45,53 @@
             <a href="{% url 'post_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important;">edit</a>
             <a href="{% url 'delete_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: brown !important; border-color: brown !important;">delete</a>
             {% endif %}
-            <a href="{% url 'answer_form' data.id 0 %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: #0a95ff !important; border-color: #0a95ff !important;">Post your answer</a>
+            <!-- <a href="{% url 'answer_form' data.id 0 %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: #0a95ff !important; border-color: #0a95ff !important;">Post your answer</a> -->
         </div>
 
     </div>
     <div class="row">
         <h6>{{total_answer}} &nbsp; Answer</h6>
-        {% for data in answer_data %}
+        {% for data_ans in answer_data %}
         <div style="width: 95%; display:inline;border-bottom: 1px solid #c0c0c0;padding-bottom: 10px;">
             
             <div style="margin-left: 25px;">
                 <!-- <h4 class="main_title col-sm-9">{{data}}</h4> -->
-                <p class="pt-3" style="font-size: 13px;">
-                    {% if data.is_accepted %} 
-                    <i class="fa fa-check fa-2x" id="answer_{{ data.id }}" style="color: green; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data.id }}', true)"></i>
-                    {% else %}
-                    <i class="fa fa-check fa-2x" id="answer_{{ data.id }}" style="color: grey; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data.id }}', false)"></i>
-                    {% endif %} 
-                    &nbsp; &nbsp; {{data.body | safe}}
-                </p>
+                
+                    <p class="pt-3" style="font-size: 13px;">
+                        {% if data.author.id == login_user_id %}
+                            {% if data_ans.is_accepted %} 
+                            <i class="fa fa-check fa-2x" id="answer_{{ data_ans.id }}" style="color: green; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data_ans.id }}', true)"></i>
+                            {% else %}
+                            <i class="fa fa-check fa-2x" id="answer_{{ data_ans.id }}" style="color: #5555; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data_ans.id }}', false)"></i>
+                            {% endif %} 
+                        {% endif %}
+                        &nbsp; &nbsp; {{data_ans.body | safe}}
+                    </p>
+                
 
                 <div style="float: right;font-size: 10px;">
-                    <span>edited &nbsp; {{data.updated_at}}</span><br>
-                    <span >answered &nbsp; {{data.created_at}}</span><br>
-                    <i class="fa fa-user"></i>&nbsp; {{data.author__first_name}}&nbsp;{{data.author__last_name}}
+                    <span>edited &nbsp; {{data_ans.updated_at}}</span><br>
+                    <span >answered &nbsp; {{data_ans.created_at}}</span><br>
+                    <i class="fa fa-user"></i>&nbsp; {{data_ans.author__first_name}}&nbsp;{{data_ans.author__last_name}}
                 </div>
-
-                {% if data.author.id == login_user_id %}
-                    <a href="{% url 'answer_form' data.question data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">Edit answer</a>
+                {% if data_ans.author == login_user_id %}
+                    <a href="{% url 'answer_form' data_ans.question data_ans.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">Edit answer</a>
                 {% endif %}
             </div>
         </div>
         {% endfor %}
     </div>
+    <div class="container py-5">
+        <h5>Post a answer:</h5>
+        <form method="POST" action="{% url 'post_answer' question_id 0 %}">
+            {% csrf_token %}
+            {{ form|crispy }}  
+            <br>
+            <button class="btn btn-primary center" type="submit">Post answer</button>
+            <button class="btn btn-primary center" type="submit">Save as a Draft</button>
+        </form>
+    </div>
+    
     <p style="display: none;">{% csrf_token %}</p>
     <script>
         function VotePost(event, post_id, vote_type){
@@ -140,12 +159,12 @@
                 success: function (data) {
                     console.log("data", data);
                     if (data.code == 1 && is_accepted == true && data.old_answer_id == 0){
-                        $("#answer_" + answer_id).css('color', 'grey')
+                        $("#answer_" + answer_id).css('color', '#5555')
                         $("#answer_" + answer_id).attr("onclick","AcceptAnswer(" + answer_id +", false)");
                     }
                     if (data.code == 1 && is_accepted == false){
                         $("#answer_" + answer_id).css('color', 'green')
-                        $("#answer_" + data.old_answer_id).css('color', 'grey')
+                        $("#answer_" + data.old_answer_id).css('color', '#5555')
                         $("#answer_" + answer_id).attr("onclick","AcceptAnswer(" + answer_id +", true)");
                         $("#answer_" + data.old_answer_id).attr("onclick","AcceptAnswer(" + answer_id +", false)");
                     }

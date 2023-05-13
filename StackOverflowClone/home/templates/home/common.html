@@ -33,35 +33,21 @@
     <header>
         <nav class="navbar navbar-expand-lg" style="box-shadow: 1px 4px 4px rgb(218, 218, 218);">
             <div class="container nav_align">
-                <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}">
-                <img src="{% static 'home/img/homelogo.png' %}" class="logo" alt="logo" style="width: 175px !important;"></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item nav_hover">
-                            <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}">About</a>
-                        </li>
-                        <li class="nav-item nav_hover">
-                            <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}">Products</a>
-                        </li>
-                        <li class="nav-item nav_hover">
-                            <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}">For Teams</a>
-                        </li>
-                    </ul> -->
+                    <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}">
+                    <img src="{% static 'home/img/homelogo.png' %}" class="logo" alt="logo" style="width: 175px !important;"></a>
+    
                     <form action="/" class="nav_searchbar" role="search" style="flex-grow: 1;">
                         <input class="form-control search_bar_input" id='question_search' name="question_search" type="search" placeholder="Search..." style="font-family:sans-serif" aria-label="Search">
                     </form>
                     
                     {% if request.user.is_authenticated  %}
                     <div style="color: white; padding-left: 10px;"><a class="edit_pro" href="{% url 'profile' %}"><i class="fa fa-user" style="padding-right: 5px;"></i> {{ request.user.first_name }} {{ request.user.last_name }}</a></div>
-                    <a href="{% url 'signout' %}" class="center btn_style_1" style="text-decoration: none;margin-left: 5px;padding-left: 10px;">Logout</a>
+                    <a href="{% url 'signout' %}" class="center logout_btn">Logout</a>
                     {% else %}
-                    <a href="{% url 'login' %}" class="center btn_style_1" style="text-decoration: none;margin-left: 5px;">Log in</a>
-                    <a href="{% url 'register' %}" class="text-light btn_style_2 center" style="text-decoration: none;margin-left: 5px;">Sign Up</a>
+                    <a href="{% url 'login' %}" class="center logout_btn" style="margin-left: 5px;">Log in</a>
+                    <a href="{% url 'register' %}" class=" logout_btn center" style="margin-left: 5px;">Sign Up</a>
                     {% endif %}
                 </div>
             </div>
@@ -101,19 +87,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-2 pt-4">
-                    <p><a class="footer_title" href="#">NEW TITLE</a></p>
+                    <p class="footer_title">Discover</p>
                     <span><a class="footer_details" href="#">Questions</a></span><br>
                     <span><a class="footer_details" href="#">Help</a></span><br>
                 </div>
                 <div class="col-sm-2 pt-4">
-                    <p><a class="footer_title" href="#">ADD TITLE</a></p>
+                    <p class="footer_title">Product</p>
                     <span><a class="footer_details" href="#">Teams</a></span><br>
                     <span><a class="footer_details" href="#">Advertising</a></span><br>
                     <span><a class="footer_details" href="#">Collectives</a></span><br>
                     <span><a class="footer_details" href="#">Talent</a></span><br>
                 </div>
                 <div class="col-sm-2 pt-4">
-                    <p><a class="footer_title" href="#">SOMETHING</a></p>
+                    <p class="footer_title">About-Us</p>
                     <span><a class="footer_details" href="#">About</a></span><br>
                     <span><a class="footer_details" href="#">Work Here</a></span><br>
                     <span><a class="footer_details" href="#">Legal</a></span><br>
@@ -122,7 +108,7 @@
                     <span><a class="footer_details" href="#">Contact Us</a></span><br>
                 </div>
                 <div class="col-sm-2 pt-4">
-                    <p><a class="footer_title" href="#">Network</a></p>
+                    <p class="footer_title">Network</p>
                     <span><a class="footer_details" href="#">API</a></span><br>
                     <span><a class="footer_details" href="#">Data</a></span><br>
                 </div>

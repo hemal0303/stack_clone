@@ -4,12 +4,16 @@
 }
 
 :root {
-    --theme_background: #1a2229;
-    --theme_line: #0A95FF;
+    --theme_background: #a4c7e6;
+    --theme_line: #07518f;
 }
 
 header{
     background-color: var(--theme_background);
+    border-radius: 0 0 85% 85% / 35%;
+    /* position: fixed;
+    width: -webkit-fill-available; */
+    overflow: auto;
 }
 
 .logo {
@@ -54,6 +58,7 @@ nav {
 footer {
     background-color: var(--theme_background);
     padding-bottom: 50px;
+    border-radius: 85% 85% 0 0 / 20%;
 }
 
 .footer_title {
@@ -71,13 +76,13 @@ footer {
 }
 
 .footer_details {
-    color: #9199a1;
+    color: #07518f;
     font-size: 13px;
     text-decoration: none;
 }
 
 .footer_details:hover {
-    color: #9199a1;
+    color: white;
     font-size: 13px;
     text-decoration: none;
 }
@@ -211,4 +216,8 @@ footer {
     -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
     background-clip: padding-box
+}
+
+.left_menus:hover{
+    color: #07518f;
 }
