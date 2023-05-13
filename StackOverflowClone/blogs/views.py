@@ -105,8 +105,10 @@ def view_question(request, question_id):
                 "is_accepted",
                 "created_at",
             )
-        return render(
-            request,
+
+            ans_form = AnswerForm(instance=None)
+
+        return render(request,
             "blogs/view_question.html",
             context={
                 "data": data,
@@ -116,6 +118,7 @@ def view_question(request, question_id):
                 "total_answer": len(answer_data),
                 "login_user_id": user_id,
                 "question_id": question_id,
+                "form":ans_form,
             },
         )
     except Exception as e:

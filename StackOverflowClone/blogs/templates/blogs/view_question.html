@@ -1,6 +1,7 @@
 {% extends 'home/index.html' %}
 {% load static %}
 {% block content %}
+{% load crispy_forms_tags %}
 <style>
     .up_voted{
         color: black;
@@ -16,6 +17,9 @@
         font-size: 11px;
         margin-right: 10px;
     }
+    #cke_id_body{
+		width: auto !important;
+	}
 </style>
     <div class="row" style="margin-bottom: 40px;">
         <div style="width: 5%; display:inline">
@@ -40,7 +44,7 @@
             <a href="{% url 'post_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important;">edit</a>
             <a href="{% url 'delete_question' data.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: brown !important; border-color: brown !important;">delete</a>
             {% endif %}
-            <a href="{% url 'answer_form' data.id 0 %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: #0a95ff !important; border-color: #0a95ff !important;">Post your answer</a>
+            <!-- <a href="{% url 'answer_form' data.id 0 %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: #0a95ff !important; border-color: #0a95ff !important;">Post your answer</a> -->
         </div>
 
     </div>
@@ -73,6 +77,17 @@
         </div>
         {% endfor %}
     </div>
+    <div class="container py-5">
+        <h5>Post a answer:</h5>
+        <form method="POST" action="{% url 'post_answer' question_id 0 %}">
+            {% csrf_token %}
+            {{ form|crispy }}  
+            <br>
+            <button class="btn btn-primary center" type="submit">Post answer</button>
+            <button class="btn btn-primary center" type="submit">Save as a Draft</button>
+        </form>
+    </div>
+    
     <p style="display: none;">{% csrf_token %}</p>
     <script>
         function VotePost(event, post_id, vote_type){

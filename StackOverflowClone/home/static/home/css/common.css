@@ -49,3 +49,6 @@ box-sizing: border-box !important;
     text-transform: capitalize;
     text-decoration: none;
 }
+p{
+    line-break: anywhere;
+}
