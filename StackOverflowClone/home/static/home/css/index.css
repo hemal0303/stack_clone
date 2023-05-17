@@ -190,11 +190,12 @@ footer {
 }
 
 .question_list{
-    border-bottom: 1px solid #c0c0c0;
+    /* border-bottom: 1px solid #c0c0c0; */
     padding: 10px;
     max-height: 150px;
     height: auto;
     overflow: hidden;
+    margin-bottom: 15px;
 }
 
 .dropdown-menu{

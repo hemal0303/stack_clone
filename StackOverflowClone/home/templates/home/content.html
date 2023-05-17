@@ -25,12 +25,14 @@
                         <a href="{% url 'view_question' que.id %}">{{ que.title }}</a>
                         <p class="pt-3" style="font-size: 13px;">{{ que.body | safe }}</p>
                     </div>
+                    <div style="border-bottom: 1px solid #c0c0c0;"></div>
                 {% endif %}
             {% else %}
                 <div class="col-sm-12 question_list">
                     <a href="{% url 'view_question' que.id %}">{{ que.title }}</a>
                     <p class="pt-3" style="font-size: 13px;">{{ que.body | safe }}</p>
                 </div>
+                <div style="border-bottom: 1px solid #c0c0c0;"></div>
             {% endif %}
         {% endfor %}
     </div>

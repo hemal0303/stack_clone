@@ -7,7 +7,7 @@ from home import manager
 from home.views import index
 import logging
 from .forms import QuestionForm, AnswerForm
-from .models import Post, Vote, Tags, PostAnswer
+from .models import Post, Vote, Tags, PostAnswer, Comment
 from blogs.utils import paginatePost
 
 
@@ -108,6 +108,15 @@ def view_question(request, question_id):
 
             ans_form = AnswerForm(instance=None)
 
+            comment_data = Comment.objects.filter(question_id=question_id).values(
+                "id",
+                "body",
+                "author_id",
+                "author__first_name",
+                "author__last_name",
+                "updated_at",
+                "created_at",
+            )
         return render(request,
             "blogs/view_question.html",
             context={
@@ -119,6 +128,7 @@ def view_question(request, question_id):
                 "login_user_id": user_id,
                 "question_id": question_id,
                 "form":ans_form,
+                "commnet_data":comment_data,
             },
         )
     except Exception as e:
@@ -359,6 +369,27 @@ def accept_answer(request):
                 old_answer.save()
                 old_answer_id = old_answer.id
             return JsonResponse({"code": 1, "old_answer_id": old_answer_id})
+    except Exception as e:
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
+
+def add_comment(request, question_id, answer_id, comment_id):
+    try:
+        comment_body = request.POST["comment"]
+        question_id = question_id if question_id != 0 else None
+        answer_id = answer_id if answer_id != 0 else None
+        comment_id = comment_id if comment_id != 0 else None
+
+        if question_id and comment_id == None:
+            Comment.objects.create(body=comment_body,author_id=request.user.id,question_id=question_id)
+        if answer_id and comment_id == None:
+            Comment.objects.create(body=comment_body,author_id=request.user.id,question_id=question_id,answer_id=answer_id)
+        if comment_id:
+            Comment.objects.filter(id=comment_id).update(body=comment_body)
+        
+        return redirect(view_question, question_id=question_id)
+        
     except Exception as e:
         manager.create_from_exception(e)
         logging.exception("Something went worng.")
