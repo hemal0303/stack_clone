@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 {% load crispy_forms_tags %}
+{% load custom_tags %}
 <style>
     .up_voted{
         color: black;
@@ -60,7 +61,7 @@
             <br>
             <div>
                 {% for cmt_data in commnet_data %}
-                <p class="cmt_list" id="id_cmt_{{cmt_data.id}}">{{cmt_data.body}}-<small> {{ cmt_data.author__first_name }}&nbsp;{{ cmt_data.author__last_name }}&nbsp;<span>({{ cmt_data.updated_at }})</span></small>&nbsp;&nbsp;
+                <p class="cmt_list" id="id_cmt_{{cmt_data.id}}">{{cmt_data.body}}-<small> {{ cmt_data.author__first_name }}&nbsp;{{ cmt_data.author__last_name }}&nbsp;<span style="color: #0751a8;">- {{ cmt_data.updated_at | human_time }}</span></small>&nbsp;&nbsp;
                     {% if cmt_data.author_id == login_user_id %}
                     <i class="bi bi-pencil-fill" style="font-size: 13px;cursor: pointer;" aria-hidden="true" onclick="EditCommnet('{{cmt_data.id}}')"></i>
                     {% endif %}

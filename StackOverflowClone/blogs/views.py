@@ -9,6 +9,8 @@ import logging
 from .forms import QuestionForm, AnswerForm
 from .models import Post, Vote, Tags, PostAnswer, Comment
 from blogs.utils import paginatePost
+import pytz
+import datetime
 
 
 # Create your views here.
@@ -385,6 +387,7 @@ def add_comment(request, question_id, answer_id, comment_id):
         question_id = question_id if question_id != 0 else None
         answer_id = answer_id if answer_id != 0 else None
         comment_id = comment_id if comment_id != 0 else None
+        utc_now = datetime.datetime.now(pytz.utc)
 
         if question_id and comment_id == None:
             Comment.objects.create(
@@ -398,7 +401,9 @@ def add_comment(request, question_id, answer_id, comment_id):
                 answer_id=answer_id,
             )
         if comment_id:
-            Comment.objects.filter(id=comment_id).update(body=comment_body)
+            Comment.objects.filter(id=comment_id).update(
+                body=comment_body, updated_at=utc_now
+            )
 
         return redirect(view_question, question_id=question_id)
 
