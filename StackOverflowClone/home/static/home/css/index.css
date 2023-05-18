@@ -14,6 +14,7 @@ header{
     /* position: fixed;
     width: -webkit-fill-available; */
     overflow: auto;
+    /* z-index: 1; */
 }
 
 .logo {
