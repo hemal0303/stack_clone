@@ -10,10 +10,6 @@
 
 header{
     background-color: var(--theme_background);
-    border-radius: 0 0 85% 85% / 35%;
-    /* position: fixed;
-    width: -webkit-fill-available; */
-    overflow: auto;
 }
 
 .logo {
@@ -58,7 +54,6 @@ nav {
 footer {
     background-color: var(--theme_background);
     padding-bottom: 50px;
-    border-radius: 85% 85% 0 0 / 20%;
 }
 
 .footer_title {

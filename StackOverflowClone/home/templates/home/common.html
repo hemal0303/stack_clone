@@ -40,6 +40,12 @@
     
                     <form action="/" class="nav_searchbar" role="search" style="flex-grow: 1;">
                         <input class="form-control search_bar_input" id='question_search' name="question_search" type="search" placeholder="Search..." style="font-family:sans-serif" aria-label="Search">
+                        <div id="suggestion_div">
+                            <span class="span_help">collective:"Name" collective content</span> <br>
+                            <span class="span_help">TEST</span><br>
+                            <span class="span_help">TEST</span><br>
+                            <span class="span_help">TEST</span>
+                        </div>
                     </form>
                     
                     {% if request.user.is_authenticated  %}
@@ -162,6 +168,21 @@
                 }, time * 1000);
             }
         }
+
+        document.getElementById("question_search").addEventListener("click", function() {
+        var input = this;
+        var div = document.getElementById("suggestion_div");
+        
+        var inputRect = input.getBoundingClientRect();
+        div.style.display = "block";
+        div.style.width = inputRect.width + "px";
+        div.style.height = inputRect.height + "px";
+        
+        setTimeout(function() {
+            input.focus();
+        }, 0);
+        });
+
 
 </script>
 

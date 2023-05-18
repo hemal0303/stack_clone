@@ -36,6 +36,9 @@ def post_question(request, question_id):
                 search_tags = request.POST.getlist("search_tag[]")
                 question = form.save(commit=False)
                 question.author_id = request.user.id
+                question.status = (
+                    "published" if "publish_button" in request.POST else "draft"
+                )
                 question.save()
                 question.tags.set(search_tags)
                 return redirect(view_question, question_id=question.id)
@@ -117,7 +120,8 @@ def view_question(request, question_id):
                 "updated_at",
                 "created_at",
             )
-        return render(request,
+        return render(
+            request,
             "blogs/view_question.html",
             context={
                 "data": data,
@@ -127,8 +131,8 @@ def view_question(request, question_id):
                 "total_answer": len(answer_data),
                 "login_user_id": user_id,
                 "question_id": question_id,
-                "form":ans_form,
-                "commnet_data":comment_data,
+                "form": ans_form,
+                "commnet_data": comment_data,
             },
         )
     except Exception as e:
@@ -374,6 +378,7 @@ def accept_answer(request):
         logging.exception("Something went worng.")
         return HttpResponse("Something went wrong")
 
+
 def add_comment(request, question_id, answer_id, comment_id):
     try:
         comment_body = request.POST["comment"]
@@ -382,14 +387,21 @@ def add_comment(request, question_id, answer_id, comment_id):
         comment_id = comment_id if comment_id != 0 else None
 
         if question_id and comment_id == None:
-            Comment.objects.create(body=comment_body,author_id=request.user.id,question_id=question_id)
+            Comment.objects.create(
+                body=comment_body, author_id=request.user.id, question_id=question_id
+            )
         if answer_id and comment_id == None:
-            Comment.objects.create(body=comment_body,author_id=request.user.id,question_id=question_id,answer_id=answer_id)
+            Comment.objects.create(
+                body=comment_body,
+                author_id=request.user.id,
+                question_id=question_id,
+                answer_id=answer_id,
+            )
         if comment_id:
             Comment.objects.filter(id=comment_id).update(body=comment_body)
-        
+
         return redirect(view_question, question_id=question_id)
-        
+
     except Exception as e:
         manager.create_from_exception(e)
         logging.exception("Something went worng.")

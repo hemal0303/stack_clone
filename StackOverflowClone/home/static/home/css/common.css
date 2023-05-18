@@ -73,3 +73,17 @@ p{
 .main_content_custom{
     min-height: calc(100vh - 53px);
 }
+
+#suggestion_div {
+    display: none;
+    border: 1px solid #5555;
+    background-color: white;
+    width: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: auto !important;   
+    transition: width 0.3s, height 0.3s;
+    position:absolute !important;
+    overflow: hidden;
+    white-space: pre-wrap;
+  }

@@ -37,27 +37,35 @@ def index(request):
         )
         questions = []
         if question_search:
+            # query = {
+            #     "query": {
+            #         "bool": {
+            #             "should": [
+            #                 {
+            #                     "wildcard": {
+            #                         "title": {
+            #                             "value": "*" + question_search + "*",
+            #                             "case_insensitive": True,
+            #                         }
+            #                     }
+            #                 },
+            #                 {
+            #                     "wildcard": {
+            #                         "body": {
+            #                             "value": "*" + question_search + "*",
+            #                             "case_insensitive": True,
+            #                         }
+            #                     }
+            #                 },
+            #             ]
+            #         }
+            #     }
+            # }
             query = {
                 "query": {
-                    "bool": {
-                        "should": [
-                            {
-                                "wildcard": {
-                                    "title": {
-                                        "value": "*" + question_search + "*",
-                                        "case_insensitive": True,
-                                    }
-                                }
-                            },
-                            {
-                                "wildcard": {
-                                    "body": {
-                                        "value": "*" + question_search + "*",
-                                        "case_insensitive": True,
-                                    }
-                                }
-                            },
-                        ]
+                    "query_string": {
+                        "fields": ["title", "body"],
+                        "query": f"*{question_search.lower()}*",
                     }
                 }
             }
@@ -72,6 +80,7 @@ def index(request):
                     }
                 )
 
+        print("questions", questions)
         if len(questions) == 0:
             questions = (
                 Post.objects.filter(

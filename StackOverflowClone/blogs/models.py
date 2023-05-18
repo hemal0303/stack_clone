@@ -4,6 +4,8 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from home.elastic_connection import ElasticSearch
 from elasticsearch import Elasticsearch
+import pytz
+import datetime
 
 es = Elasticsearch()
 
@@ -40,6 +42,8 @@ class Post(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        utc_now = datetime.datetime.now(pytz.utc)
+        self.created = utc_now
         super().save(*args, **kwargs)
 
         # Elasticsearch
