@@ -38,8 +38,8 @@
                     <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}">
                     <img src="{% static 'home/img/homelogo.png' %}" class="logo" alt="logo" style="width: 175px !important;"></a>
     
-                    <form action="/" class="nav_searchbar" role="search" style="flex-grow: 1;">
-                        <input class="form-control search_bar_input" id='question_search' name="question_search" type="search" placeholder="Search..." style="font-family:sans-serif" aria-label="Search">
+                    <form action="/" class="nav_searchbar" role="search" style="flex-grow: 1;"  autocomplete="off" >
+                        <input class="form-control search_bar_input" autocomplete="off" id='question_search' name="question_search" type="search" placeholder="Search..." style="font-family:sans-serif" aria-label="Search">
                         <div id="suggestion_div">
                             <span class="span_help">collective:"Name" collective content</span> <br>
                             <span class="span_help">TEST</span><br>

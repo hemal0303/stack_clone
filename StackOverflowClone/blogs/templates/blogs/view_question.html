@@ -60,7 +60,7 @@
             <br>
             <br>
             <div>
-                {% for cmt_data in commnet_data %}
+                {% for cmt_data in qu_commnet_data %}
                 <p class="cmt_list" id="id_cmt_{{cmt_data.id}}">{{cmt_data.body}}-<small> {{ cmt_data.author__first_name }}&nbsp;{{ cmt_data.author__last_name }}&nbsp;<span style="color: #0751a8;">- {{ cmt_data.updated_at | human_time }}</span></small>&nbsp;&nbsp;
                     {% if cmt_data.author_id == login_user_id %}
                     <i class="bi bi-pencil-fill" style="font-size: 13px;cursor: pointer;" aria-hidden="true" onclick="EditCommnet('{{cmt_data.id}}')"></i>
@@ -123,6 +123,42 @@
                 {% if data_ans.author == login_user_id %}
                     <a href="{% url 'answer_form' data_ans.question data_ans.id %}" class="col-sm-1 text-light btn_style_2 center" style="background-color: green !important; border-color: green !important; margin-right: 10px;">Edit answer</a>
                 {% endif %}
+                <br>
+                <br>
+                <div>
+                    {% for ans_cmt_data in answer_comment_data %}
+                        {% if ans_cmt_data.answer_id == data_ans.id %}
+                            <p class="cmt_list" id="id_cmt_{{ans_cmt_data.id}}">{{ans_cmt_data.body}}-<small> {{ ans_cmt_data.author__first_name }}&nbsp;{{ ans_cmt_data.author__last_name }}&nbsp;<span style="color: #0751a8;">- {{ ans_cmt_data.updated_at | human_time }}</span></small>&nbsp;&nbsp;
+                                {% if ans_cmt_data.author_id == login_user_id %}
+                                <i class="bi bi-pencil-fill" style="font-size: 13px;cursor: pointer;" aria-hidden="true" onclick="EditCommnet('{{ans_cmt_data.id}}')"></i>
+                                {% endif %}
+                            </p>
+                            <div id="edit_comment_model_{{ans_cmt_data.id}}" style="display: none;padding-top: 5px;border-top: 1px solid silver;" class="col-sm-12 col-md-12 col-lg-12">
+                                <form style="display: flex;" method="POST" action="{% url 'add_comment' question_id 0 ans_cmt_data.id %}">
+                                    {% csrf_token %}
+                                    <div style="width: 83%;margin-right: 5px;">
+                                    <textarea name="comment" cols="59" rows="3" style="max-height: 100px;font-size: 13px;padding: 5px;">{{ans_cmt_data.body}}</textarea>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-primary center" type="submit" style="font-size: 13px;margin-bottom: 5px;">update comment</button>
+                                        <button class="btn btn-primary center" type="reset" onclick="EditCommnetCancel('{{ans_cmt_data.id}}')" style="font-size: 13px;">cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <span class="add_a_comment" onclick="addAnsComment('{{data_ans.id}}')">Add a comment</span>
+                <div id="add_ans_comment_model_{{data_ans.id}}" style="display: none;" class="col-sm-12 col-md-12 col-lg-12">
+                    <form style="display: flex;" method="POST" action="{% url 'add_comment' question_id data_ans.id 0 %}">
+                        {% csrf_token %}
+                        <div style="width: 83%;">
+                        <textarea name="comment" cols="60" rows="3" style="max-height: 100px;font-size: 13px;padding: 5px;"></textarea>
+                        </div>
+                        <div>
+                        <button class="btn btn-primary center" type="submit" style="font-size: 13px;">Add comment</button></div>
+                    </form>
+                </div>
             </div>
         </div>
         {% endfor %}
@@ -239,6 +275,10 @@
                     console.log("comment_id", comment_id);
                     $("#id_cmt_"+comment_id).show();
                     $("#edit_comment_model_"+comment_id).hide();
+                }
+
+                function addAnsComment(ans_id){
+                    $("#add_ans_comment_model_"+ans_id).show();
                 }
     </script>
 {% endblock %}

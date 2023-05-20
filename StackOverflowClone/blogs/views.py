@@ -110,10 +110,11 @@ def view_question(request, question_id):
                 "is_accepted",
                 "created_at",
             )
+            answer_ids = list(answer_data.values_list("id",flat=True))
 
             ans_form = AnswerForm(instance=None)
 
-            comment_data = Comment.objects.filter(question_id=question_id).values(
+            question_comment_data = Comment.objects.filter(question_id=question_id,answer__isnull=True).values(
                 "id",
                 "body",
                 "author_id",
@@ -122,6 +123,17 @@ def view_question(request, question_id):
                 "updated_at",
                 "created_at",
             )
+            answer_comment_data = Comment.objects.filter(answer_id__in=answer_ids).values(
+                "id",
+                "body",
+                "author_id",
+                "answer_id",
+                "author__first_name",
+                "author__last_name",
+                "updated_at",
+                "created_at",
+            )
+            print(" answer_comment_data",answer_comment_data)
         return render(
             request,
             "blogs/view_question.html",
@@ -134,7 +146,8 @@ def view_question(request, question_id):
                 "login_user_id": user_id,
                 "question_id": question_id,
                 "form": ans_form,
-                "commnet_data": comment_data,
+                "qu_commnet_data": question_comment_data,
+                "answer_comment_data": answer_comment_data,
             },
         )
     except Exception as e:
@@ -389,7 +402,7 @@ def add_comment(request, question_id, answer_id, comment_id):
         comment_id = comment_id if comment_id != 0 else None
         utc_now = datetime.datetime.now(pytz.utc)
 
-        if question_id and comment_id == None:
+        if question_id and comment_id == None and answer_id == None:
             Comment.objects.create(
                 body=comment_body, author_id=request.user.id, question_id=question_id
             )
