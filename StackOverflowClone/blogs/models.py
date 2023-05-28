@@ -3,11 +3,11 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from ckeditor.fields import RichTextField
 from home.elastic_connection import ElasticSearch
-from elasticsearch import Elasticsearch
+from django.conf import settings
 import pytz
 import datetime
 
-es = Elasticsearch()
+es = settings.ELASTICSEARCH_CONNECTION
 
 
 def validate_entry(value):

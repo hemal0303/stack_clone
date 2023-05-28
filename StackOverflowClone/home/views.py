@@ -12,10 +12,10 @@ from .forms import NewUserForm
 from blogs.utils import paginatePost
 from . import manager
 from .elastic_connection import es
-from elasticsearch import Elasticsearch
+from django.conf import settings
 from django.db.models import Q
 
-es = Elasticsearch()
+es = settings.ELASTICSEARCH_CONNECTION
 
 
 def home(request):
@@ -89,7 +89,7 @@ def index(request):
                     is_deleted=False,
                 )
                 .values("title", "tags__name", "id", "body", "author_id", "status")
-                .order_by("id")
+                .order_by("-id")
                 .distinct("id")
             )
         custom_range, questions = paginatePost(request, questions, pagesize)

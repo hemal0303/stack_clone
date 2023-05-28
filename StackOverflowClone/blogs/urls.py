@@ -32,5 +32,13 @@ urlpatterns = [
         name="post_answer",
     ),
     path("accept_answer/", views.accept_answer, name="accept_answer"),
-    path("add_comment/<int:question_id>/<int:answer_id>/<int:comment_id>/",views.add_comment,name="add_comment")
+    path(
+        "add_comment/<int:question_id>/<int:answer_id>/<int:comment_id>/",
+        views.add_comment,
+        name="add_comment",
+    ),
+    # path("fetch_answers/", views.fetch_answers, name="fetch_answers"),
+    path(
+        "fetch_chatgpt_answer/", views.fetch_chatgpt_answer, name="fetch_chatgpt_answer"
+    ),
 ]

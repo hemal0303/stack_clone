@@ -33,6 +33,154 @@
         border-top: 1px solid silver;
         padding-bottom: 5px;
     }
+    #refresh_answer{
+        display: none;
+        cursor: pointer;
+    }
+    .answer {
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-image: linear-gradient(45deg, #f1e5bc 0%, #c79999 100%);
+    }
+
+    .answer p {
+        margin: 0;
+    }
+
+    .answer-link {
+        color: blue;
+        text-decoration: underline;
+    }
+
+    .answer-link:hover {
+        color: darkblue;
+    }
+    #refresh_question{
+        display: none;
+        cursor: pointer;
+    }
+    .question {
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-image: linear-gradient(45deg, #f1e5bc 0%, #c79999 100%);
+    }
+
+    .question p {
+        margin: 0;
+    }
+
+    .question-link {
+        color: blue;
+        text-decoration: underline;
+    }
+
+    .question-link:hover {
+        color: darkblue;
+    }
+    #chat_gpt_answer {
+      display: inline-block;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      text-align: center;
+      font-size: 14px;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
+    
+    #chat_gpt_answer:hover {
+      background-color: #45a049;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      background-color: #f1f1f1;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .popup-content {
+      text-align: center;
+      padding: 20px;
+      position: relative;
+      max-height: 600px; 
+    }
+    
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: -25px;
+      margin-right: -15px;
+    }
+    
+    .close:hover {
+      color: black;
+    }
+    
+    .popup:before {
+      content: '';
+      position: absolute;
+      top: -15px;
+      left: 50px;
+      border-style: solid;
+      border-width: 0 15px 15px 15px;
+      border-color: transparent transparent #f1f1f1 transparent;
+      transform: rotate(180deg);
+    }
+    .loader {
+      border: 8px solid #0751a8;
+      border-top: 8px solid #4CAF50;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      animation: spin 2s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .accept-button {
+      display: inline-block;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      text-align: center;
+      font-size: 16px;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+    
+    .accept-button:hover {
+      background-color: #45a049;
+    }
 </style>
     <div class="row" style="margin-bottom: 40px;">
         <div style="width: 5%; display:inline">
@@ -63,7 +211,7 @@
                 {% for cmt_data in qu_commnet_data %}
                 <p class="cmt_list" id="id_cmt_{{cmt_data.id}}">{{cmt_data.body}}-<small> {{ cmt_data.author__first_name }}&nbsp;{{ cmt_data.author__last_name }}&nbsp;<span style="color: #0751a8;">- {{ cmt_data.updated_at | human_time }}</span></small>&nbsp;&nbsp;
                     {% if cmt_data.author_id == login_user_id %}
-                    <i class="bi bi-pencil-fill" style="font-size: 13px;cursor: pointer;" aria-hidden="true" onclick="EditCommnet('{{cmt_data.id}}')"></i>
+                    <i class="bi bi-pencil-fill" style="font-size: 13px;cursor: pointer;" aria-hidden="true" onclick="EditComment('{{cmt_data.id}}')"></i>
                     {% endif %}
                 </p>
                 <div id="edit_comment_model_{{cmt_data.id}}" style="display: none;padding-top: 5px;border-top: 1px solid silver;" class="col-sm-12 col-md-12 col-lg-12">
@@ -74,11 +222,23 @@
                         </div>
                         <div>
                             <button class="btn btn-primary center" type="submit" style="font-size: 13px;margin-bottom: 5px;">update comment</button>
-                            <button class="btn btn-primary center" type="reset" onclick="EditCommnetCancel('{{cmt_data.id}}')" style="font-size: 13px;">cancel</button>
+                            <button class="btn btn-primary center" type="reset" onclick="EditCommentCancel('{{cmt_data.id}}')" style="font-size: 13px;">cancel</button>
                         </div>
                     </form>
                 </div>
                 {% endfor %}
+            </div>
+            <div class="answer" id="refresh_answer" onclick="getAllAnswers()">
+                <p>
+                  Someone answered this Question 
+                  click here to see!
+                </p>
+            </div>
+            <div class="question" id="refresh_question" onclick="getQuestion()">
+                <p>
+                  Author has edited the question
+                  click here to see updated version!
+                </p>
             </div>
             <span class="add_a_comment" onclick="addComment()">Add a comment</span>
             <div id="add_comment_model" style="display: none;" class="col-sm-12 col-md-12 col-lg-12">
@@ -95,8 +255,17 @@
         </div>
 
     </div>
-    <div class="row">
-        <h6>{{total_answer}} &nbsp; Answer</h6>
+    <a id="chat_gpt_answer" onclick="getChatGptAnswer('{{ data.id }}')">Click here to see what ChatGPT says about the question</a>
+    <div id="popup" class="popup">
+        <div class="popup-content">
+          <span class="close" onclick="closePopup()">&times;</span>
+          <p id="popup-content"></p>
+          <button class="accept-button" onclick="acceptAnswer()">Accept this as an Answer(not implemented yet)</button>
+        </div>
+      </div>
+
+    <div class="row" id="answers_div">
+        <h6>{{total_answer}} &nbsp; Answers</h6>
         {% for data_ans in answer_data %}
         <div style="width: 95%; display:inline;border-bottom: 1px solid #c0c0c0;padding-bottom: 10px;">
             
@@ -110,6 +279,9 @@
                             {% else %}
                             <i class="fa fa-check fa-2x" id="answer_{{ data_ans.id }}" style="color: #5555; font-size: 2rem;cursor: pointer;" onclick="AcceptAnswer('{{ data_ans.id }}', false)"></i>
                             {% endif %} 
+                        {% endif %}
+                        {% if data.author.id != login_user_id and data_ans.is_accepted %} 
+                            <i class="fa fa-check fa-2x" id="answer_{{ data_ans.id }}" style="color: green; font-size: 2rem;"></i>
                         {% endif %}
                         &nbsp; &nbsp; {{data_ans.body | safe}}
                     </p>
@@ -130,7 +302,7 @@
                         {% if ans_cmt_data.answer_id == data_ans.id %}
                             <p class="cmt_list" id="id_cmt_{{ans_cmt_data.id}}">{{ans_cmt_data.body}}-<small> {{ ans_cmt_data.author__first_name }}&nbsp;{{ ans_cmt_data.author__last_name }}&nbsp;<span style="color: #0751a8;">- {{ ans_cmt_data.updated_at | human_time }}</span></small>&nbsp;&nbsp;
                                 {% if ans_cmt_data.author_id == login_user_id %}
-                                <i class="bi bi-pencil-fill" style="font-size: 13px;cursor: pointer;" aria-hidden="true" onclick="EditCommnet('{{ans_cmt_data.id}}')"></i>
+                                <i class="bi bi-pencil-fill" style="font-size: 13px;cursor: pointer;" aria-hidden="true" onclick="EditComment('{{ans_cmt_data.id}}')"></i>
                                 {% endif %}
                             </p>
                             <div id="edit_comment_model_{{ans_cmt_data.id}}" style="display: none;padding-top: 5px;border-top: 1px solid silver;" class="col-sm-12 col-md-12 col-lg-12">
@@ -141,7 +313,7 @@
                                     </div>
                                     <div>
                                         <button class="btn btn-primary center" type="submit" style="font-size: 13px;margin-bottom: 5px;">update comment</button>
-                                        <button class="btn btn-primary center" type="reset" onclick="EditCommnetCancel('{{ans_cmt_data.id}}')" style="font-size: 13px;">cancel</button>
+                                        <button class="btn btn-primary center" type="reset" onclick="EditCommentCancel('{{ans_cmt_data.id}}')" style="font-size: 13px;">cancel</button>
                                     </div>
                                 </form>
                             </div>
@@ -165,7 +337,7 @@
     </div>
     <div class="container py-5">
         <h5>Post a answer:</h5>
-        <form method="POST" action="{% url 'post_answer' question_id 0 %}">
+        <form id="submit_answer" method="POST" action="{% url 'post_answer' question_id 0 %}">
             {% csrf_token %}
             {{ form|crispy }}  
             <br>
@@ -173,7 +345,6 @@
             <button class="btn btn-primary center" type="submit">Save as a Draft</button>
         </form>
     </div>
-    
     <p style="display: none;">{% csrf_token %}</p>
     <script>
         function VotePost(event, post_id, vote_type){
@@ -261,24 +432,83 @@
                 }}
                 )}
                 
-                function addComment() {
-                    $("#add_comment_model").show();
-                }
-                
-                function EditCommnet(comment_id){
-                    console.log("comment_id", comment_id);
-                    $("#id_cmt_"+comment_id).hide();
-                    $("#edit_comment_model_"+comment_id).show();
-                }
+        function addComment() {
+            $("#add_comment_model").show();
+        }
+        
+        function EditComment(comment_id){
+            $("#id_cmt_"+comment_id).hide();
+            $("#edit_comment_model_"+comment_id).show();
+        }
 
-                function EditCommnetCancel(comment_id){
-                    console.log("comment_id", comment_id);
-                    $("#id_cmt_"+comment_id).show();
-                    $("#edit_comment_model_"+comment_id).hide();
-                }
+        function EditCommentCancel(comment_id){
+            $("#id_cmt_"+comment_id).show();
+            $("#edit_comment_model_"+comment_id).hide();
+        }
 
-                function addAnsComment(ans_id){
-                    $("#add_ans_comment_model_"+ans_id).show();
+        function addAnsComment(ans_id){
+            $("#add_ans_comment_model_"+ans_id).show();
+        }
+
+        var question_socket = new WebSocket("ws://" + window.location.host + "/ws/question/" + '{{ question_id }}' + '/');
+        question_socket.onopen = function (e) {
+            console.log("Successfully connected to the question_socket.", question_socket);
+        }
+        $('#submit_answer').submit(function(){
+            question_socket.send(JSON.stringify({
+                'message': 'Submitted an answer', "user_id": '{{ request.user.id }}'
+            }));
+
+        })
+        question_socket.onmessage = function (e) {
+            message_data = JSON.parse(e.data)
+            // console.log("e.data.message", message_data, typeof message_data);
+            var user_id = parseInt(message_data.user_id)
+            var loggedin_user = {{ request.user.id }}
+            if (loggedin_user === user_id){
+                return false
+            }
+            if ( message_data.message == 'Question has been edited')
+                {
+                    $("#refresh_question").css("display", 'block')
                 }
+            else
+            {
+                $("#refresh_answer").css("display", 'block')
+            }}
+            
+        function getAllAnswers(){
+            location.reload();
+        }    
+        function getQuestion(){
+            location.reload();
+        }
+
+        function getChatGptAnswer(question_id) {
+            document.getElementById("popup").style.display = "block";
+            document.getElementById("popup-content").innerHTML = '<div class="loader"></div><p>Loading...</p>';
+            var inputData = {
+                'question_id': question_id,
+            }
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/blogs/fetch_chatgpt_answer/",
+                data: inputData,
+                success: function (data) {
+                    if (data.code == 1){
+                        var chatGptResponse = data.response
+                        document.getElementById("popup-content").innerHTML = chatGptResponse;
+                    }
+                    else{
+                    document.getElementById("popup").style.display = "none";
+                    }
+                }})
+        }
+    
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
     </script>
 {% endblock %}

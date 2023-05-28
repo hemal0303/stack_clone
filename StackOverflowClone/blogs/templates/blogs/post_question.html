@@ -19,10 +19,6 @@
 		width: auto !important;
 	}
 
-/* .width-3{
-	width: 31.33% ;
-} */
-
 
 </style>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
@@ -37,7 +33,7 @@
 		{% endif %}
     </div>
     
-    <form method="POST" action="{% url 'post_question' question_id %}">
+    <form id="question_form" method="POST" action="{% url 'post_question' question_id %}">
 		{% csrf_token %}
 		{{ form|crispy }}  
 
@@ -78,6 +74,19 @@
 			})
 		}
 	})
+
+	var question_socket = new WebSocket("ws://" + window.location.host + "/ws/question/" + '{{ question_id }}' + '/');
+        question_socket.onopen = function (e) {
+            console.log("Successfully connected to the question_socket.",question_socket);
+        }
+        $('#question_form').submit(function(){
+            question_socket.send(JSON.stringify({
+                'message': 'Question has been edited',
+				"user_id": '{{ request.user.id }}',
+            }));
+
+        })
+
 </script>
 
 {% endblock %}

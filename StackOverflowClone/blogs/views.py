@@ -11,6 +11,10 @@ from .models import Post, Vote, Tags, PostAnswer, Comment
 from blogs.utils import paginatePost
 import pytz
 import datetime
+from django.contrib import messages
+import openai
+from django.conf import settings
+import markdown
 
 
 # Create your views here.
@@ -110,11 +114,13 @@ def view_question(request, question_id):
                 "is_accepted",
                 "created_at",
             )
-            answer_ids = list(answer_data.values_list("id",flat=True))
+            answer_ids = list(answer_data.values_list("id", flat=True))
 
             ans_form = AnswerForm(instance=None)
 
-            question_comment_data = Comment.objects.filter(question_id=question_id,answer__isnull=True).values(
+            question_comment_data = Comment.objects.filter(
+                question_id=question_id, answer__isnull=True
+            ).values(
                 "id",
                 "body",
                 "author_id",
@@ -123,7 +129,9 @@ def view_question(request, question_id):
                 "updated_at",
                 "created_at",
             )
-            answer_comment_data = Comment.objects.filter(answer_id__in=answer_ids).values(
+            answer_comment_data = Comment.objects.filter(
+                answer_id__in=answer_ids
+            ).values(
                 "id",
                 "body",
                 "author_id",
@@ -133,7 +141,6 @@ def view_question(request, question_id):
                 "updated_at",
                 "created_at",
             )
-            print(" answer_comment_data",answer_comment_data)
         return render(
             request,
             "blogs/view_question.html",
@@ -357,6 +364,9 @@ def post_answer(request, question_id, answer_id):
                 answer.author_id = request.user.id
                 answer.save()
                 return redirect(view_question, question_id=question_id)
+            else:
+                messages.error(request, "Please enter your answer in body!")
+                return redirect(view_question, question_id=question_id)
     except Exception as e:
         manager.create_from_exception(e)
         logging.exception("Something went worng.")
@@ -420,6 +430,42 @@ def add_comment(request, question_id, answer_id, comment_id):
 
         return redirect(view_question, question_id=question_id)
 
+    except Exception as e:
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
+
+
+@csrf_exempt
+def fetch_chatgpt_answer(request):
+    try:
+        question_id = request.POST.get("question_id")
+        if question_id:
+            question = (
+                Post.objects.filter(id=int(question_id)).values("title", "body").first()
+            )
+            openai.api_key = settings.CHATGPT_API_KEY
+            message = (
+                "title :"
+                + question["title"]
+                + "and this is my question body :"
+                + question["body"]
+            )
+            messages = [
+                {"role": "system", "content": "You are a intelligent assistant."}
+            ]
+            if message:
+                messages.append(
+                    {"role": "user", "content": message},
+                )
+                chat = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo", messages=messages
+                )
+            response = chat.choices[0].message.content
+            md = markdown.Markdown()
+            response = md.convert(response)
+            return JsonResponse({"code": 1, "response": response})
+        return JsonResponse({"code": 0, "msg": "Something went wrong"})
     except Exception as e:
         manager.create_from_exception(e)
         logging.exception("Something went worng.")
