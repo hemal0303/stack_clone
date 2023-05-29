@@ -14,3 +14,15 @@ settings.json
 # ignore media files.
 /media/profile_avatars/*
 !/media/profile_avatars/default_user_avatar.png
+elasticsearch-deployment.yaml
+elasticsearch-service.yaml
+esdata-persistentvolumeclaim.yaml
+postgres-data-persistentvolumeclaim.yaml
+postgres-deployment.yaml
+postgres-service.yaml
+redis-deployment.yaml
+redis-service.yaml
+stack-clone-mynetwork-networkpolicy.yaml
+StackOverflowClone--env-configmap.yaml
+web-deployment.yaml
+web-service.yaml
