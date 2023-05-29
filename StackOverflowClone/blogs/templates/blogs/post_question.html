@@ -80,11 +80,12 @@
             console.log("Successfully connected to the question_socket.",question_socket);
         }
         $('#question_form').submit(function(){
-            question_socket.send(JSON.stringify({
+			if ({{ request.user.id }} !== 'None') {
+				question_socket.send(JSON.stringify({
                 'message': 'Question has been edited',
 				"user_id": '{{ request.user.id }}',
             }));
-
+            } 
         })
 
 </script>

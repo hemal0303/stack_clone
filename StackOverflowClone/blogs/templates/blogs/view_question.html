@@ -462,10 +462,9 @@
         })
         question_socket.onmessage = function (e) {
             message_data = JSON.parse(e.data)
-            // console.log("e.data.message", message_data, typeof message_data);
             var user_id = parseInt(message_data.user_id)
-            var loggedin_user = {{ request.user.id }}
-            if (loggedin_user === user_id){
+            var logged_in_user_id = {{ request.user.id|default:"null" }};
+            if (logged_in_user_id === user_id){
                 return false
             }
             if ( message_data.message == 'Question has been edited')
