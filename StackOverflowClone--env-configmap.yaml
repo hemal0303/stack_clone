@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  CHATGPT_API_KEY: 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
+  DEBUG: "True"
+  DJANGO_SUPERUSER_EMAIL: admin@admin.com
+  DJANGO_SUPERUSER_PASSWORD: admin
+  DJANGO_SUPERUSER_USERNAME: admin
+  POSTGRES_DB: blog_websocket
+  POSTGRES_HOST: postgres
+  POSTGRES_PASSWORD: 3396mybi
+  POSTGRES_PORT: "5432"
+  POSTGRES_USER: postgres
+  SECRET_KEY: django-insecure-w7ms8+o)9j533vn+yb_j-8mx!jibw$ef$b#m6%euf*u&2z^p1&
+  SOCIAL_AUTH_GITHUB_KEY: 8be8775121bc18388791
+  SOCIAL_AUTH_GITHUB_SECRET: 49c16b6dec0e8fd91e47d7ccfdb90434666c0c31
+  SOCIAL_AUTH_GOOGLE_OAUTH2_KEY: 1033893544115-n1r9pjgn2kjblbh09qskm2mkgkp15fp7.apps.googleusercontent.com
+  SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET: 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
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: postgres-StackOverflowClone--env
+  name: StackOverflowClone--env
