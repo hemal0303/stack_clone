@@ -6,6 +6,7 @@ services:
     build:
       context: ./StackOverflowClone
       dockerfile: Dockerfile
+    platform: linux/amd64
     image: stack_clone:v2
     environment:
       - PORT=8020
