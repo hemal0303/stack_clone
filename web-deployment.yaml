@@ -15,19 +15,21 @@ spec:
         app: stack-clone-deployment
     spec:
       containers:
-      - name: stack-clone-deployment
-        image: rregistry.digitalocean.com/stack-clone-v2-registry/stack_clone:v1
-        imagePullPolicy: Always
-        envFrom:
-          - secretRef:
-              name: stack-clone-web-prod-env-updated
-        env:
-          - name: PORT
-            value: "8002"
-        ports:
-        - containerPort: 8002
+        - name: stack-clone-deployment
+          image: registry.digitalocean.com/stack-clone-v5-registry/stack_clone:v1
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: prod-env-creds
+          env:
+            - name: PORT
+              value: "8002"
+            - name: ELASTICSEARCH_HOST
+              value: "139.59.55.117"
+          ports:
+            - containerPort: 8002
       imagePullSecrets:
-        - name: stack-clone-v2-registry
+        - name: stack-clone-v5-registry
 
 ---
 apiVersion: v1

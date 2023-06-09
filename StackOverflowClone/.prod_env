@@ -1,9 +1,9 @@
 SECRET_KEY="django-insecure-w7ms8+o)9j533vn+yb_j-8mx!jibw$ef$b#m6%euf*u&2z^p1&"
 DEBUG=True
 POSTGRES_DB=defaultdb
-POSTGRES_PASSWORD=AVNS_RM2JuU4sknHAWJQt0jx
+POSTGRES_PASSWORD=AVNS_e_WPSspd8RNs7ONcQSO
 POSTGRES_USER=doadmin
-POSTGRES_HOST=stack-clone-db-do-user-14168967-0.b.db.ondigitalocean.com
+POSTGRES_HOST=stack-clone-v2-postgres-do-user-14168967-0.b.db.ondigitalocean.com
 POSTGRES_PORT=25060
 DJANGO_SUPERUSER_USERNAME=admin
 DJANGO_SUPERUSER_PASSWORD=admin
