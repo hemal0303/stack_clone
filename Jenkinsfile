@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    label 'ubuntu-latest'
+    label 'master'
   }
   environment {
     PYTHON_VERSION = '3.10.7'
