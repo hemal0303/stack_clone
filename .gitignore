@@ -1,5 +1,6 @@
 # settings.py
-# .env
+.env
+.prod_env
 *.pyc 
 db.sqlite3
 # collectstatic.sh
