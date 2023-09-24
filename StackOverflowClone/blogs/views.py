@@ -7,7 +7,7 @@ from home import manager
 from home.views import index
 import logging
 from .forms import QuestionForm, AnswerForm
-from .models import Post, Vote, Tags, PostAnswer, Comment
+from .models import Post, Vote, Tags, PostAnswer, Comment, Notification
 from blogs.utils import paginatePost
 import pytz
 import datetime
@@ -15,6 +15,7 @@ from django.contrib import messages
 import openai
 from django.conf import settings
 import markdown
+from blogs.signals import create_notification
 
 
 # Create your views here.
@@ -64,7 +65,7 @@ def post_question(request, question_id):
         return HttpResponse("Something went wrong")
 
 
-def view_question(request, question_id):
+def view_question(request, question_id, notification_id=None):
     try:
         user_id = request.user.id
         if question_id:
@@ -141,6 +142,8 @@ def view_question(request, question_id):
                 "updated_at",
                 "created_at",
             )
+        if notification_id:
+            Notification.objects.filter(id=notification_id).update(is_read=True)
         return render(
             request,
             "blogs/view_question.html",
@@ -352,7 +355,6 @@ def post_answer(request, question_id, answer_id):
     try:
         if request.method == "POST":
             answer = PostAnswer.objects.get(id=answer_id) if answer_id != 0 else None
-            search_tag = request.POST.get("search_tag")
             form = (
                 AnswerForm(request.POST, instance=answer)
                 if answer
@@ -363,6 +365,16 @@ def post_answer(request, question_id, answer_id):
                 answer.question_id = question_id
                 answer.author_id = request.user.id
                 answer.save()
+                receiver = (
+                    Post.objects.filter(id=question_id).values("author_id").first()
+                )
+                create_notification(
+                    question_id,
+                    request.user.id,
+                    receiver["author_id"],
+                    "answer",
+                    answer.body,
+                )
                 return redirect(view_question, question_id=question_id)
             else:
                 messages.error(request, "Please enter your answer in body!")
@@ -413,10 +425,28 @@ def add_comment(request, question_id, answer_id, comment_id):
         utc_now = datetime.datetime.now(pytz.utc)
 
         if question_id and comment_id == None and answer_id == None:
+            receiver = Post.objects.filter(id=question_id).values("author_id").first()
+            create_notification(
+                question_id,
+                request.user.id,
+                receiver["author_id"],
+                "comment",
+                comment_body,
+            )
             Comment.objects.create(
                 body=comment_body, author_id=request.user.id, question_id=question_id
             )
         if answer_id and comment_id == None:
+            receiver = (
+                PostAnswer.objects.filter(id=answer_id).values("author_id").first()
+            )
+            create_notification(
+                question_id,
+                request.user.id,
+                receiver["author_id"],
+                "comment to answer",
+                comment_body,
+            )
             Comment.objects.create(
                 body=comment_body,
                 author_id=request.user.id,

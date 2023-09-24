@@ -29,7 +29,7 @@
 		{% if question_id == 0 %}
         <a href="{% url 'index' %}" class="btn btn-primary center" style="width:auto;">Back</a>
 		{% else %}
-		<a href="{% url 'view_question' question_id %}" class="btn btn-primary center" style="width:auto;">Back</a>
+		<a href="{% url 'view_question' question_id=question_id %}" class="btn btn-primary center" style="width:auto;">Back</a>
 		{% endif %}
     </div>
     

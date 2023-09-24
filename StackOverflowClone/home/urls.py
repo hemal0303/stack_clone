@@ -12,4 +12,5 @@ urlpatterns = [
     path("signout/", views.signout, name="signout"),
     path("social-auth/", include("social_django.urls", namespace="social")),
     path("logout/", auth_view.LogoutView.as_view(), name="logout"),
+    path("notifications/<int:user_id>/", views.notifications, name="notifications"),
 ]

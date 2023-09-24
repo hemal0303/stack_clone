@@ -22,14 +22,14 @@
             {% if que.status == 'draft' %}
                 {% if request.user.id == que.author_id %}
                     <div class="col-sm-12 question_list">
-                        <a href="{% url 'view_question' que.id %}">{{ que.title }}</a>
+                        <a href="{% url 'view_question' question_id=que.id %}">{{ que.title }}</a>
                         <p class="pt-3" style="font-size: 13px;">{{ que.body | safe }}</p>
                     </div>
                     <div style="border-bottom: 1px solid #c0c0c0;"></div>
                 {% endif %}
             {% else %}
                 <div class="col-sm-12 question_list">
-                    <a href="{% url 'view_question' que.id %}">{{ que.title }}</a>
+                    <a href="{% url 'view_question' question_id=que.id %}">{{ que.title }}</a>
                     <p class="pt-3" style="font-size: 13px;">{{ que.body | safe }}</p>
                 </div>
                 <div style="border-bottom: 1px solid #c0c0c0;"></div>

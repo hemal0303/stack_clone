@@ -14,7 +14,7 @@
 		{% if question.id == 0 %}
         <a href="{% url 'index' %}" class="btn btn-primary center" style="width:auto;">Back</a>
 		{% else %}
-		<a href="{% url 'view_question' question.id %}" class="btn btn-primary center" style="width:auto;">Back</a>
+		<a href="{% url 'view_question' question_id=question.id %}" class="btn btn-primary center" style="width:auto;">Back</a>
 		{% endif %}
     </div>
     <h4 style="color: hsl(205,47%,42%);">{{question.title | safe }}</h4>

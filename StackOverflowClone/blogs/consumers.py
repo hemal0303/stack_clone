@@ -11,14 +11,14 @@ class BlogConsumer(WebsocketConsumer):
     def connect(self):
         try:
             self.accept()
-            self.chat_box_name = (
-                self.scope["url_route"]["kwargs"]["chat_box_name"]
-                if "chat_box_name" in self.scope["url_route"]["kwargs"]
+            self.question_name = (
+                self.scope["url_route"]["kwargs"]["question_name"]
+                if "question_name" in self.scope["url_route"]["kwargs"]
                 else None
             )
             self.room_group_name = (
-                "chat_%s" % self.chat_box_name
-                if self.chat_box_name is not None
+                "chat_%s" % self.question_name
+                if self.question_name is not None
                 else None
             )
             if self.room_group_name is not None:

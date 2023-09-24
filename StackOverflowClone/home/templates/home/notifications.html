@@ -1,0 +1,33 @@
+{% extends 'home/index.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        .pagination {
+            display: inline-block;
+            }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            }
+    </style>
+    <div class="row" style="justify-content: space-between;">
+        <h4 class="main_title col-sm-10" style="width: auto;">Notifications</h4>
+    </div>
+    <div class="row">
+        {% for notification in notifications %}
+            <a href="{% url 'view_question' question_id=notification.post_id notification_id=notification.id %}" style="text-decoration: none!important;">
+                <div style="background-color:{% if not notification.is_read %} #f4f1e5 {% endif %}" class="col-sm-12 question_list">
+                    <p>{{ notification.notification_type.capitalize }}</p>
+                    <p>{{ notification.post__title }}</p>
+                    <p class="pt-3" style="font-size: 13px;">{{ notification.notification_content | safe }}</p>
+                </div>
+            </a>
+                <div style="border-bottom: 1px solid #c0c0c0;"></div>
+        {% endfor %}
+    </div>
+
+    <!-- {% include 'blogs/pagination.html' with queryset=questions custom_range=custom_range %} -->
+{% endblock %}

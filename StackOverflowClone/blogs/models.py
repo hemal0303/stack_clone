@@ -87,7 +87,12 @@ class Post(models.Model):
 
 class Tags(models.Model):
     name = models.CharField(max_length=250, unique=True)
-    description = models.CharField(max_length=250, null=True, blank=True)
+    description = models.CharField(
+        max_length=250,
+        null=True,
+        blank=True,
+        default="No description available at the moment.",
+    )
 
     def __str__(self):
         return self.name
@@ -132,3 +137,28 @@ class Vote(models.Model):
 
     def __str__(self):
         return str(self.question.title)
+
+
+class Notification(models.Model):
+    sender = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="sent_notifications"
+    )
+    receiver = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="received_notifications"
+    )
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    notification_type = models.CharField(max_length=50)
+    notification_content = models.CharField(max_length=500, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def save(self, *args, **kwargs):
+        utc_now = datetime.datetime.now(pytz.utc)
+        self.created = utc_now
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.post.title)

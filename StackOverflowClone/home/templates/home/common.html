@@ -35,8 +35,9 @@
             <div class="container nav_align">
                 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}">
-                    <img src="{% static 'home/img/homelogo.png' %}" class="logo" alt="logo" style="width: 175px !important;"></a>
+                    <!-- <a style="text-decoration:none;" class="text-light nav-link" aria-current="page" href="{% url 'index' %}"> -->
+                    <!-- <img src="{% static 'home/img/homelogo.png' %}" class="logo" alt="logo" style="width: 175px !important;"></a> -->
+                    <a href="{% url 'index' %}"><img src="https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg" alt="DigitalOcean Referral Badge" /></a>
     
                     <form action="/" class="nav_searchbar" role="search" style="flex-grow: 1;"  autocomplete="off" >
                         <input class="form-control search_bar_input" autocomplete="off" id='question_search' name="question_search" type="search" placeholder="Search..." style="font-family:sans-serif" aria-label="Search">
@@ -49,7 +50,17 @@
                     </form>
                     
                     {% if request.user.is_authenticated  %}
-                    <div style="color: white; padding-left: 10px;"><a class="edit_pro" href="{% url 'profile' %}"><i class="fa fa-user" style="padding-right: 5px;"></i> {{ request.user.first_name }} {{ request.user.last_name }}</a></div>
+                    <div style="color: white; padding-left: 10px;position: relative;""><a class="edit_pro" href="{% url 'profile' %}"><i class="fa fa-user" style="padding-right: 5px;"></i> {{ request.user.first_name }} {{ request.user.last_name }}</a>  
+                        <!-- <a href="{% url 'notifications' user.id %}">
+                            <i style="color: blue;" class="fas fa-bell"></i>
+                            <span class="notification-count">{{ notifications_count }}</span>
+                        </a> -->
+                    
+                    <a href="{% url 'notifications' user.id %}" class="notification" style="background-color: #07518f;">
+                        <span>Inbox</span>
+                        <span class="badge">{{ notification_count }}</span>
+                      </a>
+                    </div>
                     <a href="{% url 'signout' %}" class="center logout_btn">Logout</a>
                     {% else %}
                     <a href="{% url 'login' %}" class="center logout_btn" style="margin-left: 5px;">Log in</a>

@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render, HttpResponse
 import logging
 
 # from blogs.documents import PostDocument
-from blogs.models import Post
+from blogs.models import Post, Notification
 from .backend import EmailAuthBackend
 from .forms import NewUserForm
 from blogs.utils import paginatePost
@@ -80,7 +80,6 @@ def index(request):
                     }
                 )
 
-        print("questions", questions)
         if len(questions) == 0:
             questions = (
                 Post.objects.filter(
@@ -151,10 +150,29 @@ def register(request):
 
 def signout(request):
     try:
-        request_userId = request.user.id
         logout(request)
         messages.success(request, "Logout Successfully!")
         return redirect("/")
+
+    except Exception as e:
+        manager.create_from_exception(e)
+        logging.exception("Something went worng.")
+        return HttpResponse("Something went wrong")
+
+
+def notifications(request, user_id):
+    try:
+        notifications = Notification.objects.filter(receiver_id=user_id).values(
+            "post_id",
+            "post__title",
+            "notification_content",
+            "notification_type",
+            "is_read",
+            "id",
+        )
+        return render(
+            request, "home/notifications.html", {"notifications": notifications}
+        )
 
     except Exception as e:
         manager.create_from_exception(e)
