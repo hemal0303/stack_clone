@@ -29,12 +29,12 @@ jobs:
         working-directory: ./app
         run: |
           docker build -f Dockerfile \
-            -t registry.digitalocean.com/stack-clone-registry/cfe-k8s/stackclone:latest \
-            -t registry.digitalocean.com/stack-clone-registry/cfe-k8s/stackclone:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5} \
+            -t registry.digitalocean.com/stack-clone-registry/hemal0303/stackclone:latest \
+            -t registry.digitalocean.com/stack-clone-registry/hemal0303/stackclone:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5} \
             .
       - name: Push image
         run: |
-          docker push registry.digitalocean.com/stack-clone-registry/cfe-k8s/stackclone --all-tags
+          docker push registry.digitalocean.com/stack-clone-registry/hemal0303/stackclone --all-tags
     #   - name: K8s cluster kubeconfig file with/ short-lived creds
     #     run: |
     #       doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.CLUSTER_NAME }}
@@ -58,7 +58,7 @@ jobs:
     #       kubectl create secret generic django-k8s-web-prod-env --from-env-file=web/.env.prod
     #   - name: Update Deployment image
     #     run: |
-    #       kubectl set image deployment/django-k8s-web-deployment django-k8s-web=registry.digitalocean.com/cfe-k8s/django-k8s-web:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5}
+    #       kubectl set image deployment/django-k8s-web-deployment django-k8s-web=registry.digitalocean.com/hemal0303/django-k8s-web:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5}
     #   - name: Wait for rollout to finish
     #     run: |
     #       kubectl rollout status deployment/django-k8s-web-deployment
