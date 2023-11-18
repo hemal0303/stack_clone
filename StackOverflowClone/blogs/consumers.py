@@ -16,15 +16,29 @@ class BlogConsumer(WebsocketConsumer):
                 if "question_name" in self.scope["url_route"]["kwargs"]
                 else None
             )
-            self.room_group_name = (
+            self.socket_question_name = (
                 "chat_%s" % self.question_name
                 if self.question_name is not None
                 else None
             )
-            if self.room_group_name is not None:
+            if self.socket_question_name is not None:
                 async_to_sync(self.channel_layer.group_add)(
-                    self.room_group_name, self.channel_name
+                    self.socket_question_name, self.channel_name
                 )
+
+            self.user_id = (
+                self.scope["url_route"]["kwargs"]["user_id"]
+                if "user_id" in self.scope["url_route"]["kwargs"]
+                else None
+            )
+            self.socket_user_id = (
+                "connection_%s" % self.user_id if self.user_id is not None else None
+            )
+            if self.socket_user_id is not None:
+                async_to_sync(self.channel_layer.group_add)(
+                    self.socket_user_id, self.channel_name
+                )
+
         except Exception as e:
             manager.create_from_exception(e)
             logging.exception("Something went worng.")
@@ -37,10 +51,19 @@ class BlogConsumer(WebsocketConsumer):
         text_data = json.loads(text_data)
         message = text_data["message"]
         user_id = text_data["user_id"]
-        if self.room_group_name is not None:
+        if self.socket_question_name is not None:
             async_to_sync(self.channel_layer.group_send)(
-                self.room_group_name,
+                self.socket_question_name,
                 {"type": "chat_message", "message": message, "user_id": user_id},
+            )
+        if self.socket_user_id is not None:
+            async_to_sync(self.channel_layer.group_send)(
+                self.socket_user_id,
+                {
+                    "type": "chat_message",
+                    "message": message,
+                    "user_id": self.socket_user_id,
+                },
             )
 
     def chat_message(self, event):

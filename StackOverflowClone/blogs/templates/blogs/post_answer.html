@@ -19,7 +19,7 @@
     </div>
     <h4 style="color: hsl(205,47%,42%);">{{question.title | safe }}</h4>
     <p style="padding-left: 5px;">{{question.body | safe }}</p>
-    <form method="POST" action="{% url 'post_answer' question.id answer_id %}">
+    <form id="answer_form" method="POST" action="{% url 'post_answer' question.id answer_id %}">
 		{% csrf_token %}
 		{{ form|crispy }}  
 		<br>
@@ -28,6 +28,23 @@
 		<button class="btn btn-primary" type="submit">Save as a Draft</button>
 	</form>
 </div>
+
+<script>
+	var current_user = '{{ request.user.id }}'
+	var author = '{{ question.author_id }}'
+	if ( current_user != author) {
+	var author_socket = new WebSocket("ws://" + window.location.host + "/ws/home/" + '{{ question.author_id }}' + '/');
+        console.log("author_socket", author_socket);
+        $('#answer_form').submit(function(){
+			if ({{ question.author_id }} !== 'None') {
+				author_socket.send(JSON.stringify({
+                'message': 'New notification',
+				"user_id": '{{ question.author_id }}',
+            }));
+            } 
+        })
+	}
+</script>
 
 
 {% endblock %}

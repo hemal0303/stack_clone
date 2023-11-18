@@ -193,8 +193,14 @@
             input.focus();
         }, 0);
         });
-        var socket = new WebSocket("ws://" + window.location.host + "/ws/home/");
 
+        var user = '{{ request.user.id }}'
+        if ( user != 'None'){
+            var socket = new WebSocket("ws://" + window.location.host + "/ws/home/" + user + '/');
+            socket.onmessage = function (e) {
+                alert("New notification bitches")
+            }
+        }
 
 </script>
 

@@ -335,7 +335,9 @@ def answer_form(request, question_id, answer_id):
     try:
         answer = PostAnswer.objects.get(id=answer_id) if answer_id != 0 else None
         question = (
-            Post.objects.filter(id=question_id).values("title", "body", "id").first()
+            Post.objects.filter(id=question_id)
+            .values("title", "body", "id", "author_id")
+            .first()
         )
         form = AnswerForm(instance=answer)
         if question_id:
