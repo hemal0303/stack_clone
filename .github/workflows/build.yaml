@@ -4,9 +4,9 @@ on:
   workflow_call:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [latest]
   pull_request:
-    branches: [main]
+    branches: [latest]
 
 jobs:
   #   test_django_job:
