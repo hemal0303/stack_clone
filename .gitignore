@@ -27,3 +27,4 @@ settings.json
 # StackOverflowClone--env-configmap.yaml
 # web-deployment.yaml
 # web-service.yaml
+test-django.yaml

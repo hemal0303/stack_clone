@@ -5,7 +5,7 @@ metadata:
   labels:
     app: stack-clone-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: stack-clone-deployment
@@ -16,20 +16,18 @@ spec:
     spec:
       containers:
         - name: stack-clone-deployment
-          image: registry.digitalocean.com/stack-clone-v5-registry/stack_clone:v1
+          image: registry.digitalocean.com/stack-clone-registry/stackclone:v1
           imagePullPolicy: Always
-          envFrom:
-            - secretRef:
-                name: prod-env-creds
           env:
             - name: PORT
               value: "8002"
-            - name: ELASTICSEARCH_HOST
-              value: "139.59.55.117"
+          envFrom:
+            - secretRef:
+                name: prod-creds
           ports:
             - containerPort: 8002
       imagePullSecrets:
-        - name: stack-clone-v5-registry
+        - name: stack-clone-registry
 
 ---
 apiVersion: v1
@@ -45,3 +43,57 @@ spec:
       targetPort: 8002
   selector:
     app: stack-clone-deployment
+# PART 2
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: stack-clone-deployment
+#   labels:
+#     app: stack-clone-deployment
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: stack-clone-deployment
+#   template:
+#     metadata:
+#       labels:
+#         app: stack-clone-deployment
+#     spec:
+#       containers:
+#         - name: django-k8s-web
+#           image: registry.digitalocean.com/stack-clone-registry/stackclone:v1
+#           imagePullPolicy: Always
+#           envFrom:
+#             - secretRef:
+#                 name: prod-creds
+#           # env:
+#           #   - name: PORT
+#           #     value: "8002"
+#           #   - name: POSTGRES_HOST
+#           #     value: postgres-service # Use the service name for DNS resolution
+#           #   - name: POSTGRES_DB
+#           #     value: blog_websocket
+#           #   - name: POSTGRES_USER
+#           #     value: postgres
+#           #   - name: POSTGRES_PASSWORD
+#           #     value: 3396mybi
+#           ports:
+#             - containerPort: 8002
+#       imagePullSecrets:
+#         - name: stack-clone-registry
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: stack-clone-web-service
+# spec:
+#   type: LoadBalancer
+#   ports:
+#     - name: http
+#       protocol: TCP
+#       port: 80
+#       targetPort: 8002
+#   selector:
+#     app: stack-clone-deployment

@@ -1,35 +1,70 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+spec:
+  capacity:
+    storage: 100Mi # Limit the capacity to 100MB
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/var/lib/postgresql/data"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi # Match the capacity to the PV
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: stack-clone-postgres-deployment
+  name: postgres-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: stack-clone-postgres
+      app: postgres
   template:
     metadata:
       labels:
-        app: stack-clone-postgres
+        app: postgres
     spec:
       containers:
-        - name: stack-clone-postgres
-          image: postgres
-          envFrom:
-          - secretRef:
-              name: stack-clone-web-prod-env-updated
+        - name: postgres
+          image: postgres:latest
+          env:
+            - name: POSTGRES_DB
+              value: blog_websocket
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: 3396mybi
           ports:
             - containerPort: 5432
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
 
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: stack-clone-postgres-service
+  name: postgres-service
 spec:
   selector:
-    app: stack-clone-postgres
+    app: postgres
   ports:
     - protocol: TCP
       port: 5432
