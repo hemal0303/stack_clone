@@ -4,7 +4,7 @@ metadata:
   name: postgres-pv
 spec:
   capacity:
-    storage: 100Mi # Limit the capacity to 100MB
+    storage: 100Mi
   accessModes:
     - ReadWriteOnce
   hostPath:
@@ -20,7 +20,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi # Match the capacity to the PV
+      storage: 100Mi
 
 ---
 apiVersion: apps/v1

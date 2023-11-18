@@ -28,3 +28,6 @@ settings.json
 # web-deployment.yaml
 # web-service.yaml
 test-django.yaml
+
+# use this only for local kube cluster unless you dont need this
+postgres-deployment.yaml
