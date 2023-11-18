@@ -29,12 +29,12 @@ jobs:
         working-directory: ./StackOverflowClone
         run: |
           docker build -f Dockerfile \
-            -t registry.digitalocean.com/stack-clone-registry/hemal0303/stackclone:latest \
-            -t registry.digitalocean.com/stack-clone-registry/hemal0303/stackclone:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5} \
+            -t registry.digitalocean.com/stack-clone-registry/stackclone:latest \
+            -t registry.digitalocean.com/stack-clone-registry/stackclone:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5} \
             .
       - name: Push image
         run: |
-          docker push registry.digitalocean.com/stack-clone-registry/hemal0303/stackclone --all-tags
+          docker push registry.digitalocean.com/stack-clone-registry/stackclone --all-tags
     #   - name: K8s cluster kubeconfig file with/ short-lived creds
     #     run: |
     #       doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.CLUSTER_NAME }}
