@@ -26,7 +26,7 @@ jobs:
       - name: Login to DO Container Registry with short-lived creds
         run: doctl registry login --expiry-seconds 1200
       - name: Build container image
-        working-directory: ./app
+        working-directory: ./StackOverflowClone
         run: |
           docker build -f Dockerfile \
             -t registry.digitalocean.com/stack-clone-registry/hemal0303/stackclone:latest \
