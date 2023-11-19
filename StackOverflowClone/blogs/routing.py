@@ -8,4 +8,5 @@ ws_urlpatterns = [
         r"ws/question/(?P<question_name>\w+)/$",
         consumers.BlogConsumer.as_asgi(),
     ),
+    path("ws/webhook/", consumers.WebhookConsumer.as_asgi()),
 ]
