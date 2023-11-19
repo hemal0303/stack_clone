@@ -201,25 +201,6 @@
                 alert("New notification bitches")
             }
         }
-        const hook_socket = new WebSocket('ws://159.203.54.11/ws/webhook/');
-
-
-        hook_socket.addEventListener('open', (event) => {
-            console.log('WebSocket connection opened');
-        });
-
-        hook_socket.addEventListener('message', (event) => {
-            const data = JSON.parse(event.data);
-            alert(`WebSocket Message: ${data.message}`);
-        });
-
-        hook_socket.addEventListener('close', (event) => {
-            console.log('WebSocket connection closed');
-        });
-
-        hook_socket.addEventListener('errorr', (error) => {
-            console.error('WebSocket error:', error);
-        });
 
 </script>
 

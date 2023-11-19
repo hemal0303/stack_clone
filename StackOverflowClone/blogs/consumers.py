@@ -1,11 +1,10 @@
 import json
 
 from asgiref.sync import async_to_sync
-from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer
 from home import manager
 from django.http import JsonResponse, HttpResponse
 import logging
-import json
 
 
 class BlogConsumer(WebsocketConsumer):
@@ -75,16 +74,3 @@ class BlogConsumer(WebsocketConsumer):
                 {"type": "chat", "message": message, "user_id": user_id}
             )
         )
-
-
-class WebhookConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        await self.accept()
-
-    async def disconnect(self, close_code):
-        pass
-
-    async def receive(self, text_data):
-        data = json.loads(text_data)
-        message = f"GitHub Webhook called: {data}"
-        await self.send(text_data=json.dumps({"message": message}))
